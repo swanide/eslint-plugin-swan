@@ -1,0 +1,9 @@
+/.nyc_output
+/.temp
+/coverage
+/node_modules
+/test/temp
+/npm-debug.log
+/test.js
+package-lock.json
+/lib

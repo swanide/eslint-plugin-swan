@@ -1,0 +1,13 @@
+# ecomfe typescript rules
+extends:
+  - '@ecomfe/eslint-config'
+  - '@ecomfe/eslint-config/typescript'
+# 编译器目前使用的 babel 跟 @babel/eslint-parser 不兼容，这里回退到默认版本
+parser: 'espree'
+rules:
+    'no-console': 0
+overrides:
+    - files: ['*.ts', '*.tsx']
+      parser: '@typescript-eslint/parser'
+      parserOptions:
+          project: './tsconfig-eslint.json'

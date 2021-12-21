@@ -1,0 +1,48 @@
+{
+    "name": "eslint-plugin-swan",
+    "version": "0.0.1",
+    "description": "swan eslint plugin",
+    "main": "lib/index.js",
+    "bin": {
+        "swan-lint": "bin/swan-lint"
+    },
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "prepublish": "npm run build",
+        "build": "tsc",
+        "test": "npm run build && jest test/src --runInBand",
+        "ruleDebug": "jest test/debug* --runInBand",
+        "lint": "eslint ./src ./test/src"
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node"
+    },
+    "author": "kekee000@gmail.com",
+    "dependencies": {
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.0"
+    },
+    "devDependencies": {
+        "@babel/eslint-plugin": "^7.16.5",
+        "@ecomfe/eslint-config": "^7.3.0",
+        "@types/eslint": "^7.2.5",
+        "@types/estree": "0.0.45",
+        "@types/jest": "^27.0.3",
+        "@types/node": "^14.14.14",
+        "@types/requireindex": "^1.2.0",
+        "@typescript-eslint/eslint-plugin": "^5.4.0",
+        "@typescript-eslint/parser": "^5.4.0",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.32.0",
+        "import-fresh": "^3.3.0",
+        "jest": "^27.4.5",
+        "ts-jest": "^27.1.2",
+        "typescript": "^4.5.4"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=10.0.0"
+    }
+}
