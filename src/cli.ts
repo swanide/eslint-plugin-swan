@@ -53,7 +53,7 @@ async function main(pattern: string) {
         baseConfig: require('./config/recommended'),
         extensions: ['.swan'],
         plugins: {
-            'eslint-plugin-swan': require('../'),
+            'eslint-plugin-swan': require('./index'),
         },
     }) as ESLint;
     const results = await eslint.lintFiles(pattern);
