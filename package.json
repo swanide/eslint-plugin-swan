@@ -1,19 +1,20 @@
 {
     "name": "eslint-plugin-swan",
-    "version": "0.0.1-beta.0",
+    "version": "0.0.1-beta.1",
     "description": "swan eslint plugin",
     "main": "index.js",
     "bin": {
         "swan-lint": "bin/swan-lint"
     },
     "files": [
-        "index.*"
+        "index.*",
+        "bin"
     ],
     "scripts": {
         "prepublish": "npm run build",
-        "build:es": "tsc --module es2015",
+        "build:es": "tsc --module es6",
         "prebuild": "node test/generate-rules",
-        "build": "tsc --module es2015 && rollup -c -o index.js",
+        "build": "tsc --module es6 && rollup -c -o index.js",
         "test": "npm run build && jest test/src --runInBand",
         "ruleDebug": "jest test/debug* --runInBand",
         "lint": "eslint ./src ./test/src"
@@ -24,7 +25,7 @@
     },
     "author": "kekee000@gmail.com",
     "dependencies": {
-        "@baidu/swan-eslint-parser": "^0.0.1-beta.1"
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.2"
     },
     "devDependencies": {
         "@babel/eslint-plugin": "^7.16.5",
