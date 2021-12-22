@@ -22,10 +22,22 @@ export default {
         },
         fixable: null,
 
-        schema: [],
+        schema: [
+            {
+                type: 'object',
+                properties: {
+                    ignoreDuplicateForItem: {
+                        type: 'boolean',
+                    },
+                },
+            },
+        ],
     },
 
     create(context: RuleContext) {
+        const options = context.options[0] || {};
+        const ignoreDuplicateForItem = options.ignoreDuplicateForItem === true;
+
         const forVisitor = (node: swan.ast.XDirective) => {
             const {key: {rawName}} = node;
 
@@ -49,7 +61,7 @@ export default {
                     message: `'${rawName}' should has '${prefix}for'.`,
                 });
             }
-            else {
+            else if (!ignoreDuplicateForItem) {
                 const forValues = getDirective(element, 'for').value;
                 // s-for="item, index in list"
                 if (forValues[0]?.type === 'XExpression') {

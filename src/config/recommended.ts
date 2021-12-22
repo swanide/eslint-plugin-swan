@@ -13,7 +13,7 @@ export default {
             ...baseOverwritesSwan,
             rules: {
                 ...baseRules,
-                'max-len': [1, 120],
+                'max-len': [1, 200],
                 'swan/no-multi-spaces': 1,
                 'swan/valid-component-nesting': [1, {allowEmptyBlock: true, ignoreEmptyBlock: ['view']}],
                 'swan/mustache-interpolation-spacing': [1, 'never'],

@@ -40,7 +40,7 @@ var swanParser = {
         const usedDisableDirectiveKeys = [];
         const unusedDisableDirectiveReports = new Map();
         const filteredMessages = messages[0].filter(message => {
-            if (message.ruleId === 'swan/comment-directive') {
+            if (message === null || message === void 0 ? void 0 : message.ruleId.endsWith('swan/comment-directive')) {
                 const directiveType = message.messageId;
                 const data = message.message.split(' ');
                 switch (directiveType) {
@@ -153,11 +153,12 @@ var base = {
                 'prefer-arrow-callback': 0,
                 'prefer-const': 0,
                 'no-magic-numbers': 0,
+                'eol-last': 0,
                 'swan/comment-directive': 2,
                 'swan/no-parsing-error': 2,
                 'swan/no-duplicate-attributes': 2,
-                'swan/no-useless-mustache': [2, { ignoreStringEscape: true }],
-                'swan/valid-for': 2,
+                'swan/no-useless-mustache': 2,
+                'swan/valid-for': [2, { ignoreDuplicateForItem: true }],
                 'swan/valid-if': 2,
                 'swan/valid-elif': 2,
                 'swan/valid-else': 2,
@@ -183,12 +184,12 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = base.overrides[0], { rules: baseRules } = _a, baseOverwritesSwan = __rest(_a, ["rules"]);
 var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 120], 'swan/no-multi-spaces': 1, 'swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], 'swan/mustache-interpolation-spacing': [1, 'never'], 'swan/array-bracket-spacing': 2, 'swan/arrow-spacing': 2, 'swan/dot-location': [2, 'property'], 'swan/dot-notation': 2, 'swan/key-spacing': 2, 'swan/keyword-spacing': 2, 'swan/no-useless-concat': 2 }) }),
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], 'swan/no-multi-spaces': 1, 'swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], 'swan/mustache-interpolation-spacing': [1, 'never'], 'swan/array-bracket-spacing': 2, 'swan/arrow-spacing': 2, 'swan/dot-location': [2, 'property'], 'swan/dot-notation': 2, 'swan/key-spacing': 2, 'swan/keyword-spacing': 2, 'swan/no-useless-concat': 2 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
 const isSwanFile = (filename) => filename.endsWith('.swan');
-const getRuleUrl = (name) => `https://smartprogram.baidu.com/docs/develop/rules/${name}.md`;
+const getRuleUrl = (name) => `${process.env.SWAN_LINT_RULE_URL || 'https://smartprogram.baidu.com/docs/develop/lint'}/rules/${name}.md`;
 let ruleMap = null;
 function getCoreRule(name) {
     const map = ruleMap
@@ -617,7 +618,8 @@ var mustacheInterpolationSpacing = {
                 if (!openBrace
                     || !closeBrace
                     || openBrace.type !== 'XMustacheStart'
-                    || closeBrace.type !== 'XMustacheEnd') {
+                    || closeBrace.type !== 'XMustacheEnd'
+                    || openBrace.value === '{') {
                     return;
                 }
                 const firstToken = tokenStore.getTokenAfter(openBrace, {
@@ -649,7 +651,7 @@ var mustacheInterpolationSpacing = {
                                 start: openBrace.loc.start,
                                 end: firstToken.loc.start,
                             },
-                            message: 'Expected no space after \'{{\', but found.',
+                            message: 'Expected no space after \'{{\'.',
                             fix: fixer => fixer.removeRange([openBrace.range[1], firstToken.range[0]]),
                         });
                     }
@@ -659,7 +661,7 @@ var mustacheInterpolationSpacing = {
                                 start: lastToken.loc.end,
                                 end: closeBrace.loc.end,
                             },
-                            message: 'Expected no space before \'}}\', but found.',
+                            message: 'Expected no space before \'}}\'.',
                             fix: fixer => fixer.removeRange([lastToken.range[1], closeBrace.range[0]]),
                         });
                     }
@@ -687,7 +689,7 @@ function getLiteralRefs(node) {
 }
 var noConfusingForIf = {
     meta: {
-        type: 'suggestion',
+        type: 'problem',
         docs: {
             description: 'disallow confusing `for` and `if` directive on the same element',
             categories: ['essential'],
@@ -899,12 +901,6 @@ var noParsingError = {
 
 var noUselessConcat = wrapCoreRule('no-useless-concat');
 
-function stripQuotesForHTML(text) {
-    if ((text[0] === '"' || text[0] === '\'' || text[0] === '`') && text[0] === text[text.length - 1]) {
-        return text.slice(1, -1);
-    }
-    return null;
-}
 var noUselessMustache = {
     meta: {
         docs: {
@@ -916,106 +912,24 @@ var noUselessMustache = {
         messages: {
             unexpected: 'Unexpected mustache interpolation with a string literal value.',
         },
-        schema: [
-            {
-                type: 'object',
-                properties: {
-                    ignoreIncludesComment: {
-                        type: 'boolean',
-                    },
-                    ignoreStringEscape: {
-                        type: 'boolean',
-                    },
-                },
-            },
-        ],
-        type: 'suggestion',
+        schema: [],
+        type: 'problem',
     },
     create(context) {
-        const opts = context.options[0] || {};
-        const { ignoreIncludesComment } = opts;
-        const { ignoreStringEscape } = opts;
         function verify(node) {
             const { expression } = node.value;
-            const sourceCode = context.getSourceCode();
-            const content = sourceCode.getText().slice(node.range[0], node.range[1]);
             if (!expression) {
-                if (content.search(/^\{\{\s*\}\}$/) !== -1) {
-                    context.report({
-                        node,
-                        message: 'Unexpected empty mustache interpolation.',
-                        loc: node.loc,
-                        fix: fixer => fixer.removeRange(node.range),
-                    });
-                }
+                context.report({
+                    node,
+                    message: 'Unexpected empty mustache interpolation.',
+                    loc: node.loc,
+                    fix: fixer => fixer.removeRange(node.range),
+                });
                 return;
             }
-            let strValue = '';
-            let rawValue = '';
-            if (expression.type === 'Literal') {
-                if (typeof expression.value !== 'string') {
-                    return;
-                }
-                strValue = expression.value;
-                rawValue = expression.raw;
-            }
-            else if (expression.type === 'TemplateLiteral') {
-                if (expression.expressions.length > 0) {
-                    return;
-                }
-                strValue = expression.quasis[0].value.cooked;
-                rawValue = expression.quasis[0].value.raw;
-            }
-            else {
-                return;
-            }
-            const tokenStore = context.parserServices.getTemplateBodyTokenStore();
-            const hasComment = tokenStore
-                .getTokens(node, { includeComments: true })
-                .some(t => t.type === 'Block' || t.type === 'Line');
-            if (ignoreIncludesComment && hasComment) {
-                return;
-            }
-            let hasEscape = false;
-            if (rawValue !== strValue) {
-                const chars = [...rawValue];
-                let c = chars.shift();
-                while (c) {
-                    if (c === '\\') {
-                        c = chars.shift();
-                        if (c == null || 'nrvtbfux'.includes(c)) {
-                            hasEscape = true;
-                            break;
-                        }
-                    }
-                    c = chars.shift();
-                }
-            }
-            if (ignoreStringEscape && hasEscape) {
-                return;
-            }
-            context.report({
-                node,
-                messageId: 'unexpected',
-                loc: node.loc,
-                fix(fixer) {
-                    if (hasComment || hasEscape) {
-                        return null;
-                    }
-                    const text = expression.raw ? stripQuotesForHTML(expression.raw) : null;
-                    if (text == null) {
-                        return null;
-                    }
-                    if (text.includes('\n') || /^\s|\s$/u.test(text)) {
-                        return null;
-                    }
-                    return fixer.replaceText(node, text.replace(/\\([\s\S])/g, '$1'));
-                },
-            });
         }
         return defineTemplateBodyVisitor(context, {
-            'XElement > XMustache': verify,
-            'XAttribute,XDirective > XMustache': verify,
+            'XMustache': verify,
         });
     },
 };
@@ -1046,7 +960,7 @@ var validBind = {
                         message: `'${node.key.rawName}' should have event name.`,
                     });
                 }
-                const isMustacheValue = ((_a = node.value) === null || _a === void 0 ? void 0 : _a[0].type) === 'XMustache';
+                const isMustacheValue = ((_a = node.value[0]) === null || _a === void 0 ? void 0 : _a.type) === 'XMustache';
                 if (!(isMustacheValue
                     ? isValidSingleMustache(node.value)
                     : isIdentifierExpression(node.value))) {
@@ -1146,7 +1060,7 @@ function isAtTopLevel(node) {
 }
 var validComponentNesting = {
     meta: {
-        type: 'problem',
+        type: 'suggestion',
         docs: {
             description: 'validate component nesting',
             categories: ['essential'],
@@ -1324,9 +1238,20 @@ var validFor = {
             url: getRuleUrl('valid-for'),
         },
         fixable: null,
-        schema: [],
+        schema: [
+            {
+                type: 'object',
+                properties: {
+                    ignoreDuplicateForItem: {
+                        type: 'boolean',
+                    },
+                },
+            },
+        ],
     },
     create(context) {
+        const options = context.options[0] || {};
+        const ignoreDuplicateForItem = options.ignoreDuplicateForItem === true;
         const forVisitor = (node) => {
             const { key: { rawName } } = node;
             if (node.value.length > 1 || !isValidSingleMustacheOrExpression(node.value)) {
@@ -1349,7 +1274,7 @@ var validFor = {
                     message: `'${rawName}' should has '${prefix}for'.`,
                 });
             }
-            else {
+            else if (!ignoreDuplicateForItem) {
                 const forValues = getDirective(element, 'for').value;
                 if (((_a = forValues[0]) === null || _a === void 0 ? void 0 : _a.type) === 'XExpression') {
                     const forValue = forValues[0].expression;

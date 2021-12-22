@@ -41,13 +41,14 @@ export default {
                 'prefer-arrow-callback': 0,
                 'prefer-const': 0,
                 'no-magic-numbers': 0,
+                'eol-last': 0,
 
                 // swan rules
                 'swan/comment-directive': 2,
                 'swan/no-parsing-error': 2,
                 'swan/no-duplicate-attributes': 2,
-                'swan/no-useless-mustache': [2, {ignoreStringEscape: true}],
-                'swan/valid-for': 2,
+                'swan/no-useless-mustache': 2,
+                'swan/valid-for': [2, {ignoreDuplicateForItem: true}],
                 'swan/valid-if': 2,
                 'swan/valid-elif': 2,
                 'swan/valid-else': 2,

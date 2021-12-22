@@ -4,7 +4,7 @@ eslint plugin for swan program.
 
 support codes:
 
-- `swan` Baidu smart program tpl
+- `swan` Baidu smart program tpl language
 - `sjs` JavasSript code
 
 ## Installation

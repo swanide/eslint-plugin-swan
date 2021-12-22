@@ -8,7 +8,8 @@
     },
     "files": [
         "index.*",
-        "bin"
+        "bin",
+        "doc"
     ],
     "scripts": {
         "prepublish": "npm run build",
@@ -25,7 +26,7 @@
     },
     "author": "kekee000@gmail.com",
     "dependencies": {
-        "@baidu/swan-eslint-parser": "^0.0.1-beta.2"
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.4"
     },
     "devDependencies": {
         "@babel/eslint-plugin": "^7.16.5",
@@ -49,6 +50,6 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=10.0.0"
+        "node": ">=12.0.0"
     }
 }

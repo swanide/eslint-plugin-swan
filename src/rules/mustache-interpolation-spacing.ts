@@ -36,6 +36,8 @@ export default {
                     || !closeBrace
                     || openBrace.type !== 'XMustacheStart'
                     || closeBrace.type !== 'XMustacheEnd'
+                    // TODO {{abc: 1}} 需要特殊，先不进行处理
+                    || openBrace.value === '{'
                 ) {
                     return;
                 }
@@ -70,7 +72,7 @@ export default {
                                 start: openBrace.loc.start,
                                 end: firstToken.loc.start,
                             },
-                            message: 'Expected no space after \'{{\', but found.',
+                            message: 'Expected no space after \'{{\'.',
                             fix: fixer =>
                                 fixer.removeRange([openBrace.range[1], firstToken.range[0]]),
                         });
@@ -81,7 +83,7 @@ export default {
                                 start: lastToken.loc.end,
                                 end: closeBrace.loc.end,
                             },
-                            message: 'Expected no space before \'}}\', but found.',
+                            message: 'Expected no space before \'}}\'.',
                             fix: fixer =>
                                 fixer.removeRange([lastToken.range[1], closeBrace.range[0]]),
                         });

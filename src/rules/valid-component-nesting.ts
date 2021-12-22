@@ -41,7 +41,7 @@ function isAtTopLevel(node: swan.ast.XElement) {
 
 export default {
     meta: {
-        type: 'problem',
+        type: 'suggestion',
         docs: {
             description: 'validate component nesting',
             categories: ['essential'],

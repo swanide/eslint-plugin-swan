@@ -36,7 +36,7 @@ export default {
                         message: `'${node.key.rawName}' should have event name.`,
                     });
                 }
-                const isMustacheValue = node.value?.[0].type === 'XMustache';
+                const isMustacheValue = node.value[0]?.type === 'XMustache';
                 if (
                     !(isMustacheValue
                         ? isValidSingleMustache(node.value)

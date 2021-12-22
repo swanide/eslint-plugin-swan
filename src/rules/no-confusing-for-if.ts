@@ -32,7 +32,7 @@ function getLiteralRefs(node: swan.ast.XAttribute | swan.ast.XDirective) {
 
 export default {
     meta: {
-        type: 'suggestion',
+        type: 'problem',
         docs: {
             description: 'disallow confusing `for` and `if` directive on the same element',
             categories: ['essential'],

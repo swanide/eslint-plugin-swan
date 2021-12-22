@@ -20,7 +20,9 @@ export const isSwanFile = (filename: string) => filename.endsWith('.swan');
  * get rule url
  * @param name rule name
  */
-export const getRuleUrl = (name: string) => `https://smartprogram.baidu.com/docs/develop/rules/${name}.md`;
+export const getRuleUrl = (name: string) => `${
+    process.env.SWAN_LINT_RULE_URL || 'https://smartprogram.baidu.com/docs/develop/lint'
+}/rules/${name}.md`;
 
 
 let ruleMap: Map<string, eslint.Rule.RuleModule> = null;
