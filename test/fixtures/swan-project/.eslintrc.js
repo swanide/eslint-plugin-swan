@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['plugin:@baidu/swan/recommended'],
+    extends: ['plugin:swan/recommended'],
     env: {
         commonjs: true,
         browser: true,

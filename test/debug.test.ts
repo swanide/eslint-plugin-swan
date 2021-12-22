@@ -7,21 +7,19 @@
 import assert from 'assert';
 import {Linter} from 'eslint';
 
-const ruleName = 'valid-bind';
+const ruleName = 'valid-for';
 
 function lint() {
     const code = `
-<view bindtap="abc,def"></view>
-<view bind:tap="abc.def"></view>
-`;
+    <view s-for="expr trackBy item.id" s-for-item="item" s-for-index="index"></view>`;
     const config = {
-        parser: 'swan-eslint-parser',
+        parser: '@baidu/swan-eslint-parser',
         rules: {
             [ruleName]: 'error',
         },
     };
     const linter = new Linter();
-    linter.defineParser('swan-eslint-parser', require('swan-eslint-parser'));
+    linter.defineParser('@baidu/swan-eslint-parser', require('@baidu/swan-eslint-parser'));
     linter.defineRule(ruleName, require(`../src/rules/${ruleName}`).default);
 
     const messages = linter.verify(code, config as any, `${__dirname}/index.swan`);

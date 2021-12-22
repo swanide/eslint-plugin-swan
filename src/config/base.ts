@@ -2,9 +2,16 @@
  * @file base
  * @author mengke(kekee000@gmail.com)
  */
-import globals from '../globals';
+export const globals = {
+    App: true,
+    Page: true,
+    Component: true,
+    swan: true,
+    getApp: true,
+    getCurrentPages: true,
+};
 
-module.exports = {
+export default {
     overrides: [
         {
             files: ['*.swan'],
@@ -52,5 +59,3 @@ module.exports = {
     ],
     globals,
 };
-
-export default module.exports;

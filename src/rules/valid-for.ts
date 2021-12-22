@@ -9,6 +9,7 @@ import {
     defineTemplateBodyVisitor,
     hasDirective,
     isValidSingleMustacheOrExpression,
+    getDirective,
 } from '../utils';
 
 export default {
@@ -40,16 +41,39 @@ export default {
         const forItemVisitor = (node: swan.ast.XDirective) => {
             const {key: {rawName, prefix}} = node;
             const element = node.parent.parent;
-
-            if (!hasDirective(element, 'for')) {
+            const hasFor = hasDirective(element, 'for');
+            if (!hasFor) {
                 context.report({
                     node,
                     loc: node.loc,
                     message: `'${rawName}' should has '${prefix}for'.`,
                 });
             }
+            else {
+                const forValues = getDirective(element, 'for').value;
+                // s-for="item, index in list"
+                if (forValues[0]?.type === 'XExpression') {
+                    const forValue = forValues[0].expression as swan.ast.SwanForExpression;
+                    if (forValue.left && node.key.name === 'for-item') {
+                        context.report({
+                            node,
+                            loc: node.loc,
+                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                        });
+                    }
+                    if (forValue.index && node.key.name === 'for-index') {
+                        context.report({
+                            node,
+                            loc: node.loc,
+                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                        });
+                    }
+                }
+            }
 
-            if (node.value.length !== 1 || node.value[0].type !== 'XExpression') {
+            if (node.value.length !== 1
+                || node.value[0].type !== 'XExpression'
+                || node.value[0].expression?.type !== 'Identifier') {
                 context.report({
                     node,
                     loc: node.loc,

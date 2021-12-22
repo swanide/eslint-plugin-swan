@@ -11,7 +11,7 @@ const eventDiretives = ['bind', 'catch', 'capture-bind', 'capture-catch'];
 
 export default {
     meta: {
-        type: 'suggestion',
+        type: 'problem',
         docs: {
             description: 'validate bind directive',
             categories: ['essential'],
@@ -46,7 +46,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${node.key.rawName}' value should be 'literal' or mustache'.`,
+                        message: `'${node.key.rawName}' value should be 'literal' or 'mustache'.`,
                     });
                 }
             },

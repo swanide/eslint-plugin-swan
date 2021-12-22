@@ -4,9 +4,10 @@
  */
 import assert from 'assert';
 import {ESLint} from 'eslint';
-import eslintPluginsSwan from '../../lib';
-import baseConfig from '../../lib/config/base';
-import recommendedConfig from '../../lib/config/recommended';
+import * as eslintPluginsSwan from '../../index';
+
+const baseConfig = eslintPluginsSwan.configs.base;
+const recommendedConfig = eslintPluginsSwan.configs.recommended;
 
 const testCode = `
 <template data="{{item}}"></template>
@@ -42,7 +43,7 @@ describe('lint', () => {
                 filePath: 'page.swan',
                 warnIgnored: false,
             });
-        console.log(messages);
+        // console.log(messages);
         assert.strictEqual(messages.length, 0, 'has no errors');
     });
 

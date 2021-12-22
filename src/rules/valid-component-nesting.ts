@@ -12,6 +12,7 @@ import {
     inlineBlockComponents,
     inlineComponents,
     topLevelCompoents,
+    withSrcCompoents,
 } from '../utils/component';
 
 function isSelfClose(node: swan.ast.XElement) {
@@ -81,11 +82,14 @@ export default {
                 }
 
                 // import-sjs has src attribute is self close
-                if (node.name === 'import-sjs' && hasAttribute(node, 'src') && !isSelfClose(node)) {
+                if (withSrcCompoents.includes(node.name)
+                    && hasAttribute(node, 'src')
+                    && !isSelfClose(node)
+                ) {
                     context.report({
                         node: node,
                         loc: node.loc,
-                        message: '\'import-sjs\' with \'src\' shouldn\'t have children.',
+                        message: `'${node.name}' with 'src' shouldn't have children.`,
                     });
                 }
 

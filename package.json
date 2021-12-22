@@ -2,16 +2,18 @@
     "name": "eslint-plugin-swan",
     "version": "0.0.1-beta.0",
     "description": "swan eslint plugin",
-    "main": "lib/index.js",
+    "main": "index.js",
     "bin": {
         "swan-lint": "bin/swan-lint"
     },
     "files": [
-        "lib"
+        "index.*"
     ],
     "scripts": {
         "prepublish": "npm run build",
-        "build": "tsc",
+        "build:es": "tsc --module es2015",
+        "prebuild": "node test/generate-rules",
+        "build": "tsc --module es2015 && rollup -c -o index.js",
         "test": "npm run build && jest test/src --runInBand",
         "ruleDebug": "jest test/debug* --runInBand",
         "lint": "eslint ./src ./test/src"
@@ -22,7 +24,7 @@
     },
     "author": "kekee000@gmail.com",
     "dependencies": {
-        "@baidu/swan-eslint-parser": "^0.0.1-beta.0"
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.1"
     },
     "devDependencies": {
         "@babel/eslint-plugin": "^7.16.5",
@@ -38,7 +40,11 @@
         "import-fresh": "^3.3.0",
         "jest": "^27.4.5",
         "ts-jest": "^27.1.2",
-        "typescript": "^4.5.4"
+        "typescript": "^4.5.4",
+        "rollup": "^2.60.1",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-sourcemaps": "^0.6.3"
     },
     "license": "MIT",
     "engines": {

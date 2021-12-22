@@ -78,3 +78,13 @@ export const topLevelCompoents = [
     'import',
     'filter',
 ];
+
+/**
+ * components with src
+ */
+export const withSrcCompoents = [
+    'import',
+    'include',
+    'import-sjs',
+    'filter',
+];

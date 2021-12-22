@@ -2,6 +2,7 @@
  * @file no-multi-spaces
  * @author mengke01(kekee000@gmail.com)
  */
+import type estree from 'estree';
 import type swan from '@baidu/swan-eslint-parser';
 import type {RuleContext} from '../types/eslint';
 import {getRuleUrl} from '../utils';
@@ -12,7 +13,7 @@ const isProperty = (context: RuleContext, node: swan.ast.Token) => {
     return node.type === 'Punctuator' && sourceCode.getText(node) === ':';
 };
 
-module.exports = {
+export default {
     meta: {
         type: 'layout',
         docs: {
@@ -58,12 +59,13 @@ module.exports = {
                 && !shouldIgnore
             ) {
                 context.report({
-                    node: token,
+                    node: token as swan.ast.XNode,
                     loc: {
                         start: prevToken.loc.end,
                         end: token.loc.start,
                     },
-                    message: `Multiple spaces found before '${sourceCode.getText(token)}'.`,
+                    message: `Multiple spaces found before '${
+                        sourceCode.getText(token as estree.Node)}'.`,
                     /* eslint-disable-next-line no-loop-func */
                     fix: fixer => fixer.replaceTextRange([prevToken.range[1], token.range[0]], ' '),
                 });

@@ -2,20 +2,24 @@
  * @file recommended.js
  * @author mengke(kekee000@gmail.com)
  */
+import base from './base';
 
-module.exports = {
-    extends: require.resolve('./base'),
+const {rules: baseRules, ...baseOverwritesSwan} = base.overrides[0];
+
+export default {
+    ...base,
     overrides: [
         {
-            files: ['*.swan'],
+            ...baseOverwritesSwan,
             rules: {
+                ...baseRules,
                 'max-len': [1, 120],
                 'swan/no-multi-spaces': 1,
                 'swan/valid-component-nesting': [1, {allowEmptyBlock: true, ignoreEmptyBlock: ['view']}],
-
+                'swan/mustache-interpolation-spacing': [1, 'never'],
                 // eslint-core
                 'swan/array-bracket-spacing': 2,
-                // 'swan/arrow-spacing': 2,
+                'swan/arrow-spacing': 2,
                 'swan/dot-location': [2, 'property'],
                 'swan/dot-notation': 2,
                 // 'swan/func-call-spacing': 2,
@@ -26,5 +30,3 @@ module.exports = {
         },
     ],
 };
-
-export default module.exports;

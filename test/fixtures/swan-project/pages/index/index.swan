@@ -11,7 +11,7 @@
         type="text"
         ipt-title="输入框"
         placeholder-content="请输入内容"
-        ipt-value="{{model.iptOne.iptValue}}"
+        ipt-value="{{  model.iptOne.iptValue  }}"
         bindkeyinput="bindInput"
         bindiptblur="bindBlur"
         bindiptclean="cleanRoad"
