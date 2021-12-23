@@ -18,12 +18,12 @@ const testCode = `
     <icon s-if="abc" type="success" size="23" color="" />
 </view>
 
-<wxs module="foo">
+<import-sjs module="foo">
 var some_msg = "hello world";
 module.exports = {
     msg: some_msg
 }
-</wxs>
+</import-sjs>
 <text class="class">{{foo.msg}}<view /></text>
 `;
 

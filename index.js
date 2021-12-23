@@ -193,10 +193,9 @@ const isSwanFile = (filename) => filename.endsWith('.swan');
 const getRuleUrl = (name) => `${process.env.SWAN_LINT_RULE_URL || 'https://smartprogram.baidu.com/docs/develop/lint'}/rules/${name}.md`;
 let ruleMap = null;
 function getCoreRule(name) {
-    const map = ruleMap
-        || (ruleMap = new (require('eslint').Linter)()
-            .getRules());
-    return map.get(name) || require(`eslint/lib/rules/${name}`);
+    const eslintModulePath = process.env.ESLINT_MODULE_PATH || 'eslint';
+    const map = ruleMap || (ruleMap = new (require(eslintModulePath).Linter)().getRules());
+    return map.get(name) || require(`${eslintModulePath}/lib/rules/${name}`);
 }
 function wrapContextToOverrideTokenMethods(context, tokenStore) {
     const eslintSourceCode = context.getSourceCode();

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 const {execSync} = require('child_process');
-const {ESLint} = require('eslint');
-const swanPlugin = require('../');
+const path = require('path');
 
 const tryLoadEslint = () => {
     let globalNpmModule = '';
@@ -26,13 +25,14 @@ const tryLoadEslint = () => {
 
     let eslintModulePath = '';
     try {
-        eslintModulePath = require.resolve('eslint', {
+        const eslintPkgPath = require.resolve('eslint/package.json', {
             paths: [
                 process.cwd(),
                 `${globalNpmModule}/lib`,
                 globalYarnModule,
             ].filter(p => p.length),
         });
+        eslintModulePath = path.dirname(eslintPkgPath);
     }
     catch (e) {
     }
@@ -40,12 +40,17 @@ const tryLoadEslint = () => {
     if (!eslintModulePath) {
         throw new Error('no local or global eslint installed!');
     }
+
+    // set global eslint module path
+    process.env.ESLINT_MODULE_PATH = eslintModulePath;
     const module = require(eslintModulePath);
     return (module.default || module).ESLint;
 };
 
 async function main(pattern) {
     const ESLint = tryLoadEslint();
+    const swanPlugin = require('../');
+
     const eslint = new ESLint({
         useEslintrc: false,
         baseConfig: swanPlugin.configs.recommended,

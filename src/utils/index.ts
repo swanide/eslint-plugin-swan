@@ -27,14 +27,12 @@ export const getRuleUrl = (name: string) => `${
 
 let ruleMap: Map<string, eslint.Rule.RuleModule> = null;
 
-
 function getCoreRule(name: string) {
-    const map = ruleMap
-        || (ruleMap = new (require('eslint').Linter)()
-            .getRules());
-    return map.get(name) || require(`eslint/lib/rules/${name}`);
+    // 支持外部 eslint 传入
+    const eslintModulePath = process.env.ESLINT_MODULE_PATH || 'eslint';
+    const map = ruleMap || (ruleMap = new (require(eslintModulePath).Linter)().getRules());
+    return map.get(name) || require(`${eslintModulePath}/lib/rules/${name}`);
 }
-
 
 interface TemplateListener {
     [key: string]: (...args: any) => void;

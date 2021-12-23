@@ -7,11 +7,13 @@
 import assert from 'assert';
 import {Linter} from 'eslint';
 
-const ruleName = 'valid-for';
+const ruleName = 'valid-bind';
 
 function lint() {
     const code = `
-    <view s-for="expr trackBy item.id" s-for-item="item" s-for-index="index"></view>`;
+<view class="modal-item" catchtap="delete">删除</view>
+
+`;
     const config = {
         parser: '@baidu/swan-eslint-parser',
         rules: {

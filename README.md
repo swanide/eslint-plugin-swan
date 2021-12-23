@@ -26,7 +26,7 @@ $ npm install @baidu/eslint-plugin-swan --save-dev
 Install `@baidu/eslint-plugin-swan` global.
 
 ```
-$ npm install @baidu/eslint-plugin-swan -g
+$ npm install eslint @baidu/eslint-plugin-swan -g
 ```
 
 Use `swan-lint` to lint mini program project.
