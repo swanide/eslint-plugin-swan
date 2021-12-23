@@ -1,6 +1,6 @@
 {
     "name": "@baidu/eslint-plugin-swan",
-    "version": "0.0.1-beta.3",
+    "version": "0.0.1-beta.4",
     "description": "swan eslint plugin",
     "main": "index.js",
     "bin": {
@@ -26,7 +26,7 @@
     },
     "author": "kekee000@gmail.com",
     "dependencies": {
-        "@baidu/swan-eslint-parser": "^0.0.1-beta.4"
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.5"
     },
     "devDependencies": {
         "@babel/eslint-plugin": "^7.16.5",

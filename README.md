@@ -34,6 +34,15 @@ Use `swan-lint` to lint mini program project.
 ```
 $ swan-lint .
 ```
+Use different lint level.
+
+```
+$ SWAN_LINT_CONFIG=[base|recommended|strict] swan-lint .
+```
+
+- `base` basic lint rules, must be fixed
+- `recommended` recommended lint rules
+- `strict` strict lint rules
 
 ## Usage
 

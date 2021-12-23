@@ -4,6 +4,12 @@ const {execSync} = require('child_process');
 const path = require('path');
 
 const tryLoadEslint = () => {
+    // use eslint module path in env
+    if (process.env.ESLINT_MODULE_PATH) {
+        const module = require(eslintModulePath);
+        return (module.default || module).ESLint;
+    }
+
     let globalNpmModule = '';
     let globalYarnModule = '';
 
@@ -48,12 +54,23 @@ const tryLoadEslint = () => {
 };
 
 async function main(pattern) {
+    if (pattern === '-h' || pattern === '--help') {
+        console.log('use swan-lint to lint swan files.');
+        console.log('Example:');
+        console.log('  swan-lint .');
+        console.log('  SWAN_LINT_CONFIG=base swan-lint ./pages');
+        console.log('  SWAN_LINT_CONFIG=recommended swan-lint');
+        console.log('  SWAN_LINT_CONFIG=strict swan-lint');
+        console.log();
+        return;
+    }
+
     const ESLint = tryLoadEslint();
     const swanPlugin = require('../');
 
     const eslint = new ESLint({
         useEslintrc: false,
-        baseConfig: swanPlugin.configs.recommended,
+        baseConfig: swanPlugin.configs[process.env.SWAN_LINT_CONFIG || 'recommended'],
         extensions: ['.swan'],
         plugins: {
             '@baidu/eslint-plugin-swan': swanPlugin,

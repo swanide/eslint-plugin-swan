@@ -172,6 +172,22 @@ var base = {
     globals,
 };
 
+var __rest$1 = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+const _a$1 = base.overrides[0], { rules: baseRules } = _a$1, baseOverwritesSwan = __rest$1(_a$1, ["rules"]);
+var recommended = Object.assign(Object.assign({}, base), { overrides: [
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/array-bracket-spacing': 2, '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/dot-notation': 2, '@baidu/swan/key-spacing': 2, '@baidu/swan/keyword-spacing': 2, '@baidu/swan/no-useless-concat': 2 }) }),
+    ] });
+
 var __rest = (undefined && undefined.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -183,9 +199,9 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
         }
     return t;
 };
-const _a = base.overrides[0], { rules: baseRules } = _a, baseOverwritesSwan = __rest(_a, ["rules"]);
-var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/array-bracket-spacing': 2, '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/dot-notation': 2, '@baidu/swan/key-spacing': 2, '@baidu/swan/keyword-spacing': 2, '@baidu/swan/no-useless-concat': 2 }) }),
+const _a = recommended.overrides[0], { rules: recommendedRules } = _a, recommendedOverwritesSwan = __rest(_a, ["rules"]);
+var strict = Object.assign(Object.assign({}, recommended), { overrides: [
+        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [1, 120], '@baidu/swan/no-multi-spaces': 2, '@baidu/swan/mustache-interpolation-spacing': [2, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
@@ -1383,6 +1399,7 @@ var rules = {
 const configs = {
     base,
     recommended,
+    strict,
 };
 const processors = {
     '.swan': swanParser,
