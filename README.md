@@ -1,4 +1,4 @@
-# eslint-plugin-swan
+# @baidu/eslint-plugin-swan
 
 eslint plugin for swan program.
 
@@ -15,18 +15,18 @@ You'll first need to install [ESLint](http://eslint.org):
 $ npm i eslint --save-dev
 ```
 
-Next, install `eslint-plugin-swan`:
+Next, install `@baidu/eslint-plugin-swan`:
 
 ```
-$ npm install eslint-plugin-swan --save-dev
+$ npm install @baidu/eslint-plugin-swan --save-dev
 ```
 
 ## Bin
 
-Install `eslint-plugin-swan` global.
+Install `@baidu/eslint-plugin-swan` global.
 
 ```
-$ npm install eslint-plugin-swan -g
+$ npm install @baidu/eslint-plugin-swan -g
 ```
 
 Use `swan-lint` to lint mini program project.
@@ -42,7 +42,7 @@ Add `swan` to the plugins section of your `.eslintrc` configuration file. You ca
 ```json
 {
     "plugins": [
-        "swan"
+        "@baidu/swan"
     ]
 }
 ```
@@ -53,7 +53,7 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
     "rules": {
-        "swan/valid-bind": 2
+        "@baidu/swan/valid-bind": 2
     }
 }
 ```

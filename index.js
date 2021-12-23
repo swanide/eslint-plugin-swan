@@ -127,18 +127,19 @@ var base = {
     overrides: [
         {
             files: ['*.swan'],
-            plugins: ['eslint-plugin-swan'],
+            plugins: ['@baidu/eslint-plugin-swan'],
             parser: require.resolve('@baidu/swan-eslint-parser'),
             env: {
                 'browser': true,
                 'es6': true,
-                'swan/globals': true,
+                '@baidu/swan/globals': true,
             },
             rules: {
                 'indent': 0,
                 'no-multi-spaces': 0,
                 'import/unambiguous': 0,
                 'babel/new-cap': 0,
+                '@babel/new-cap': 0,
                 'import/no-commonjs': 0,
                 'max-len': 0,
                 'spaced-comment': 0,
@@ -154,17 +155,17 @@ var base = {
                 'prefer-const': 0,
                 'no-magic-numbers': 0,
                 'eol-last': 0,
-                'swan/comment-directive': 2,
-                'swan/no-parsing-error': 2,
-                'swan/no-duplicate-attributes': 2,
-                'swan/no-useless-mustache': 2,
-                'swan/valid-for': [2, { ignoreDuplicateForItem: true }],
-                'swan/valid-if': 2,
-                'swan/valid-elif': 2,
-                'swan/valid-else': 2,
-                'swan/no-confusing-for-if': 2,
-                'swan/html-end-tag': 2,
-                'swan/valid-bind': 2,
+                '@baidu/swan/comment-directive': 2,
+                '@baidu/swan/no-parsing-error': 2,
+                '@baidu/swan/no-duplicate-attributes': 2,
+                '@baidu/swan/no-useless-mustache': 2,
+                '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: true }],
+                '@baidu/swan/valid-if': 2,
+                '@baidu/swan/valid-elif': 2,
+                '@baidu/swan/valid-else': 2,
+                '@baidu/swan/no-confusing-for-if': 2,
+                '@baidu/swan/html-end-tag': 2,
+                '@baidu/swan/valid-bind': 2,
             },
         },
     ],
@@ -184,7 +185,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = base.overrides[0], { rules: baseRules } = _a, baseOverwritesSwan = __rest(_a, ["rules"]);
 var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], 'swan/no-multi-spaces': 1, 'swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], 'swan/mustache-interpolation-spacing': [1, 'never'], 'swan/array-bracket-spacing': 2, 'swan/arrow-spacing': 2, 'swan/dot-location': [2, 'property'], 'swan/dot-notation': 2, 'swan/key-spacing': 2, 'swan/keyword-spacing': 2, 'swan/no-useless-concat': 2 }) }),
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/array-bracket-spacing': 2, '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/dot-notation': 2, '@baidu/swan/key-spacing': 2, '@baidu/swan/keyword-spacing': 2, '@baidu/swan/no-useless-concat': 2 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;

@@ -1,6 +1,6 @@
 {
-    "name": "eslint-plugin-swan",
-    "version": "0.0.1-beta.1",
+    "name": "@baidu/eslint-plugin-swan",
+    "version": "0.0.1-beta.2",
     "description": "swan eslint plugin",
     "main": "index.js",
     "bin": {
