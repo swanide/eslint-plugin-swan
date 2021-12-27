@@ -13,7 +13,9 @@ export default {
             ...recommendedOverwritesSwan,
             rules: {
                 ...recommendedRules,
-                'max-len': [1, 120],
+                'max-len': [2, 120],
+                '@baidu/swan/valid-for': [2, {ignoreDuplicateForItem: false}],
+                '@baidu/swan/valid-component-nesting': [1, {allowEmptyBlock: false, ignoreEmptyBlock: ['view']}],
                 '@baidu/swan/no-multi-spaces': 2,
                 '@baidu/swan/mustache-interpolation-spacing': [2, 'never'],
 

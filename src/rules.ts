@@ -16,6 +16,7 @@ import noConfusingForIf from './rules/no-confusing-for-if';
 import noDuplicateAttributes from './rules/no-duplicate-attributes';
 import noMultiSpaces from './rules/no-multi-spaces';
 import noParsingError from './rules/no-parsing-error';
+import noUnaryOperator from './rules/no-unary-operator';
 import noUselessConcat from './rules/no-useless-concat';
 import noUselessMustache from './rules/no-useless-mustache';
 import validBind from './rules/valid-bind';
@@ -40,6 +41,7 @@ export default {
     'no-duplicate-attributes': noDuplicateAttributes,
     'no-multi-spaces': noMultiSpaces,
     'no-parsing-error': noParsingError,
+    'no-unary-operator': noUnaryOperator,
     'no-useless-concat': noUselessConcat,
     'no-useless-mustache': noUselessMustache,
     'valid-bind': validBind,

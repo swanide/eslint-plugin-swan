@@ -159,6 +159,7 @@ var base = {
                 '@baidu/swan/no-parsing-error': 2,
                 '@baidu/swan/no-duplicate-attributes': 2,
                 '@baidu/swan/no-useless-mustache': 2,
+                '@baidu/swan/no-unary-operator': 2,
                 '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: true }],
                 '@baidu/swan/valid-if': 2,
                 '@baidu/swan/valid-elif': 2,
@@ -201,7 +202,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = recommended.overrides[0], { rules: recommendedRules } = _a, recommendedOverwritesSwan = __rest(_a, ["rules"]);
 var strict = Object.assign(Object.assign({}, recommended), { overrides: [
-        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [1, 120], '@baidu/swan/no-multi-spaces': 2, '@baidu/swan/mustache-interpolation-spacing': [2, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
+        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 120], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 2, '@baidu/swan/mustache-interpolation-spacing': [2, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
@@ -915,6 +916,34 @@ var noParsingError = {
     },
 };
 
+var noUnaryOperator = {
+    meta: {
+        docs: {
+            description: 'disallow unary-operator in mustache interpolations',
+            categories: ['essential'],
+            url: getRuleUrl('no-unary-operator'),
+        },
+        fixable: 'code',
+        schema: [],
+        type: 'problem',
+    },
+    create(context) {
+        return defineTemplateBodyVisitor(context, {
+            'XMustache>XExpression UnaryExpression'(node) {
+                if (node.operator === '+' || node.operator === '-') {
+                    context.report({
+                        node,
+                        message: 'Unexpected mustache interpolation not support unary operator.',
+                        loc: node.loc,
+                        fix: null,
+                    });
+                    return;
+                }
+            },
+        });
+    },
+};
+
 var noUselessConcat = wrapCoreRule('no-useless-concat');
 
 var noUselessMustache = {
@@ -1386,6 +1415,7 @@ var rules = {
     'no-duplicate-attributes': noDuplicateAttributes,
     'no-multi-spaces': noMultiSpaces,
     'no-parsing-error': noParsingError,
+    'no-unary-operator': noUnaryOperator,
     'no-useless-concat': noUselessConcat,
     'no-useless-mustache': noUselessMustache,
     'valid-bind': validBind,

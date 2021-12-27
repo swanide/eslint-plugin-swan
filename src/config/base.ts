@@ -49,6 +49,7 @@ export default {
                 '@baidu/swan/no-parsing-error': 2,
                 '@baidu/swan/no-duplicate-attributes': 2,
                 '@baidu/swan/no-useless-mustache': 2,
+                '@baidu/swan/no-unary-operator': 2,
                 '@baidu/swan/valid-for': [2, {ignoreDuplicateForItem: true}],
                 '@baidu/swan/valid-if': 2,
                 '@baidu/swan/valid-elif': 2,
