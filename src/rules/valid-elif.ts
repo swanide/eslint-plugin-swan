@@ -37,7 +37,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}elif' should follow with '${prefix}if' or '${prefix}elif'.`,
+                        message: `'${prefix}elif' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
                     });
                 }
 
@@ -45,7 +45,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}elif' value should be expression.`,
+                        message: `'${prefix}elif' 值不正确`,
                     });
                 }
             },

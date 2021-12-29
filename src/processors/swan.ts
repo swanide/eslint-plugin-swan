@@ -63,7 +63,7 @@ export default {
 
         // Filter messages which are in disabled area.
         const filteredMessages = messages[0].filter(message => {
-            if (message?.ruleId.endsWith('swan/comment-directive')) {
+            if (message?.ruleId?.endsWith('swan/comment-directive')) {
                 const directiveType = message.messageId;
                 const data = message.message.split(' ');
                 switch (directiveType) {

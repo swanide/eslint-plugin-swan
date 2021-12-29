@@ -33,7 +33,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' should follow with '${prefix}if' or '${prefix}elif'.`,
+                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
                     });
                 }
 
@@ -41,7 +41,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' should have no value.`,
+                        message: `'${prefix}else' 不支持设置值`,
                     });
                 }
 
@@ -50,7 +50,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' and '${prefix}elif' directives can't exist on the same element.`,
+                        message: `'${prefix}else' 和 '${prefix}elif' 不可以同时设置在标签上`,
                     });
                 }
             },

@@ -45,7 +45,7 @@ export default {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' value should be expression.`,
+                    message: `'${rawName}' 值为非空表达式`,
                 });
             }
         };
@@ -58,7 +58,7 @@ export default {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' should has '${prefix}for'.`,
+                    message: `'${rawName}' 需要有匹配的 '${prefix}for'`,
                 });
             }
             else if (!ignoreDuplicateForItem) {
@@ -70,14 +70,14 @@ export default {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                            message: `'${rawName}' 和 '${prefix}for' 重复定义`,
                         });
                     }
                     if (forValue.index && node.key.name === 'for-index') {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                            message: `'${rawName}' 和 '${prefix}for' 重复定义`,
                         });
                     }
                 }
@@ -89,7 +89,7 @@ export default {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' value should be literal text.`,
+                    message: `'${rawName}' 值需要是合法变量`,
                 });
             }
         };

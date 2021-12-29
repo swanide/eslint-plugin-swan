@@ -7,11 +7,11 @@
 import assert from 'assert';
 import {Linter} from 'eslint';
 
-const ruleName = 'valid-bind';
+const ruleName = 'no-unary-operator';
 
 function lint() {
     const code = `
-<view class="modal-item" catchtap="delete">删除</view>
+<view class="modal-item" catchtap="delete">{{+abc}}</view>
 
 `;
     const config = {
@@ -25,6 +25,7 @@ function lint() {
     linter.defineRule(ruleName, require(`../src/rules/${ruleName}`).default);
 
     const messages = linter.verify(code, config as any, `${__dirname}/index.swan`);
+    console.log(messages);
     assert(messages.length === 0, 'should have no errors');
 }
 

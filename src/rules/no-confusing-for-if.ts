@@ -47,7 +47,7 @@ export default {
             'XDirective[key.name=\'if\']'(node: swan.ast.XDirective) {
                 const element = node.parent.parent;
                 const prefix = node.key.prefix;
-                if (hasDirective(element, 'for') || hasDirective(element, 'for-items')) {
+                if (hasDirective(element, 'for')) {
                     const forItemNode = getDirective(element, 'for-item');
                     const ifRefs = getRefs(node);
                     const forRefs = forItemNode
@@ -58,7 +58,7 @@ export default {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${prefix}if' should move to the wrapper element.`,
+                            message: `'${prefix}if' 不允许和 '${prefix}for' 在一个标签中定义`,
                         });
                     }
                 }

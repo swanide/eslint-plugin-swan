@@ -29,9 +29,15 @@ let ruleMap: Map<string, eslint.Rule.RuleModule> = null;
 
 function getCoreRule(name: string) {
     // 支持外部 eslint 传入
-    const eslintModulePath = process.env.ESLINT_MODULE_PATH || 'eslint';
-    const map = ruleMap || (ruleMap = new (require(eslintModulePath).Linter)().getRules());
-    return map.get(name) || require(`${eslintModulePath}/lib/rules/${name}`);
+    let eslintModule = null;
+    if (process.env.ESLINT_MODULE_PATH) {
+        eslintModule = require(process.env.ESLINT_MODULE_PATH);
+    }
+    else {
+        eslintModule = require('eslint');
+    }
+    const map = ruleMap || (ruleMap = new (eslintModule.Linter)().getRules());
+    return map.get(name);
 }
 
 interface TemplateListener {
@@ -393,10 +399,10 @@ export function wrapCoreRule(coreRuleName: string) {
             for (const [key, handler] of Object.entries(handlers)) {
                 let newKey = null;
                 if (key === 'Program' || key === 'Program:exit') {
-                    newKey = key.replace(/\bProgram\b/g, 'XExpressionContainer');
+                    newKey = key.replace(/\bProgram\b/g, 'XExpression');
                 }
                 else {
-                    newKey = key.replace(/^|(?<=,)/g, 'XExpressionContainer ');
+                    newKey = key.replace(/^|(?<=,)/g, 'XExpression ');
                 }
                 handlers[newKey] = handler;
                 delete handlers[key];

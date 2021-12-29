@@ -33,7 +33,7 @@ ruleTester.run('swan/no-unary-operator', rule as Rule.RuleModule, {
             code: '<view bindtap="{{+tap}}"></view>',
             errors: [
                 {
-                    message: 'Unexpected mustache interpolation not support unary operator.',
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
                     type: 'UnaryExpression',
                 },
             ],
@@ -43,7 +43,7 @@ ruleTester.run('swan/no-unary-operator', rule as Rule.RuleModule, {
             code: '<view>{{[+value]}}</view>',
             errors: [
                 {
-                    message: 'Unexpected mustache interpolation not support unary operator.',
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
                     type: 'UnaryExpression',
                 },
             ],
@@ -53,7 +53,7 @@ ruleTester.run('swan/no-unary-operator', rule as Rule.RuleModule, {
             code: '<view style="color:{{value || + value}}"></view>',
             errors: [
                 {
-                    message: 'Unexpected mustache interpolation not support unary operator.',
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
                     type: 'UnaryExpression',
                 },
             ],

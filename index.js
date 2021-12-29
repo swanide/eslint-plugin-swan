@@ -40,7 +40,8 @@ var swanParser = {
         const usedDisableDirectiveKeys = [];
         const unusedDisableDirectiveReports = new Map();
         const filteredMessages = messages[0].filter(message => {
-            if (message === null || message === void 0 ? void 0 : message.ruleId.endsWith('swan/comment-directive')) {
+            var _a;
+            if ((_a = message === null || message === void 0 ? void 0 : message.ruleId) === null || _a === void 0 ? void 0 : _a.endsWith('swan/comment-directive')) {
                 const directiveType = message.messageId;
                 const data = message.message.split(' ');
                 switch (directiveType) {
@@ -210,9 +211,15 @@ const isSwanFile = (filename) => filename.endsWith('.swan');
 const getRuleUrl = (name) => `${process.env.SWAN_LINT_RULE_URL || 'https://smartprogram.baidu.com/docs/develop/lint'}/rules/${name}.md`;
 let ruleMap = null;
 function getCoreRule(name) {
-    const eslintModulePath = process.env.ESLINT_MODULE_PATH || 'eslint';
-    const map = ruleMap || (ruleMap = new (require(eslintModulePath).Linter)().getRules());
-    return map.get(name) || require(`${eslintModulePath}/lib/rules/${name}`);
+    let eslintModule = null;
+    if (process.env.ESLINT_MODULE_PATH) {
+        eslintModule = require(process.env.ESLINT_MODULE_PATH);
+    }
+    else {
+        eslintModule = require('eslint');
+    }
+    const map = ruleMap || (ruleMap = new (eslintModule.Linter)().getRules());
+    return map.get(name);
 }
 function wrapContextToOverrideTokenMethods(context, tokenStore) {
     const eslintSourceCode = context.getSourceCode();
@@ -333,10 +340,10 @@ function wrapCoreRule(coreRuleName) {
             for (const [key, handler] of Object.entries(handlers)) {
                 let newKey = null;
                 if (key === 'Program' || key === 'Program:exit') {
-                    newKey = key.replace(/\bProgram\b/g, 'XExpressionContainer');
+                    newKey = key.replace(/\bProgram\b/g, 'XExpression');
                 }
                 else {
-                    newKey = key.replace(/^|(?<=,)/g, 'XExpressionContainer ');
+                    newKey = key.replace(/^|(?<=,)/g, 'XExpression ');
                 }
                 handlers[newKey] = handler;
                 delete handlers[key];
@@ -582,7 +589,7 @@ var htmlEndTag = {
         },
         fixable: 'code',
         messages: {
-            unexpected: 'missing end tag',
+            unexpected: '没有结束标签',
         },
         schema: [],
     },
@@ -596,7 +603,7 @@ var htmlEndTag = {
                     context.report({
                         node: node.startTag,
                         loc: node.startTag.loc,
-                        message: '\'<{{name}}>\' should have end tag.',
+                        message: '\'<{{name}}>\' 没有结束标签',
                         data: { name },
                     });
                 }
@@ -649,14 +656,14 @@ var mustacheInterpolationSpacing = {
                     if (openBrace.range[1] === firstToken.range[0]) {
                         context.report({
                             node: openBrace,
-                            message: 'Expected 1 space after \'{{\', but not found.',
+                            message: '\'{{\' 后面需要一个空格',
                             fix: fixer => fixer.insertTextAfter(openBrace, ' '),
                         });
                     }
                     if (closeBrace.range[0] === lastToken.range[1]) {
                         context.report({
                             node: closeBrace,
-                            message: 'Expected 1 space before \'}}\', but not found.',
+                            message: '\'}}\' 前面需要一个空格',
                             fix: fixer => fixer.insertTextBefore(closeBrace, ' '),
                         });
                     }
@@ -668,7 +675,7 @@ var mustacheInterpolationSpacing = {
                                 start: openBrace.loc.start,
                                 end: firstToken.loc.start,
                             },
-                            message: 'Expected no space after \'{{\'.',
+                            message: '\'{{\' 后面不允许空格',
                             fix: fixer => fixer.removeRange([openBrace.range[1], firstToken.range[0]]),
                         });
                     }
@@ -678,7 +685,7 @@ var mustacheInterpolationSpacing = {
                                 start: lastToken.loc.end,
                                 end: closeBrace.loc.end,
                             },
-                            message: 'Expected no space before \'}}\'.',
+                            message: '\'}}\' 前面不允许空格',
                             fix: fixer => fixer.removeRange([lastToken.range[1], closeBrace.range[0]]),
                         });
                     }
@@ -720,7 +727,7 @@ var noConfusingForIf = {
             'XDirective[key.name=\'if\']'(node) {
                 const element = node.parent.parent;
                 const prefix = node.key.prefix;
-                if (hasDirective(element, 'for') || hasDirective(element, 'for-items')) {
+                if (hasDirective(element, 'for')) {
                     const forItemNode = getDirective(element, 'for-item');
                     const ifRefs = getRefs(node);
                     const forRefs = forItemNode
@@ -731,7 +738,7 @@ var noConfusingForIf = {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${prefix}if' should move to the wrapper element.`,
+                            message: `'${prefix}if' 不允许和 '${prefix}for' 在一个标签中定义`,
                         });
                     }
                 }
@@ -766,7 +773,7 @@ var noDuplicateAttributes = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: 'Duplicate directive \'{{name}}\'.',
+                        message: '\'{{name}}\' 属性名重复',
                         data: { name },
                     });
                 }
@@ -826,7 +833,7 @@ var noMultiSpaces = {
                         start: prevToken.loc.end,
                         end: token.loc.start,
                     },
-                    message: `Multiple spaces found before '${sourceCode.getText(token)}'.`,
+                    message: `${sourceCode.getText(token)} 前有多个空格，只允许 1 个空格`,
                     fix: fixer => fixer.replaceTextRange([prevToken.range[1], token.range[0]], ' '),
                 });
             }
@@ -836,7 +843,7 @@ var noMultiSpaces = {
     },
 };
 
-const DEFAULT_OPTIONS = Object.freeze(Object.assign(Object.create(null), {
+const parserErrorCode = {
     'abrupt-closing-of-empty-comment': true,
     'control-character-in-input-stream': true,
     'eof-before-tag-name': true,
@@ -867,7 +874,40 @@ const DEFAULT_OPTIONS = Object.freeze(Object.assign(Object.create(null), {
     'x-invalid-end-tag': true,
     'x-invalid-directive': true,
     'x-expression-error': true,
-}));
+};
+const DEFAULT_OPTIONS = Object.freeze(Object.assign({}, parserErrorCode));
+const messageZH = {
+    'abrupt-closing-of-empty-comment': '注释闭合错误',
+    'control-character-in-input-stream': '页面不允许控制字符',
+    'eof-before-tag-name': '标签未正常结束',
+    'eof-in-comment': '注释未正常结束',
+    'eof-in-tag': '标签未正常结束',
+    'incorrectly-closed-comment': '注释闭合错误',
+    'incorrectly-opened-comment': '注释闭合错误',
+    'invalid-first-character-of-tag-name': '标签首字符不合法',
+    'missing-attribute-value': '未正确设置属性值',
+    'missing-end-tag-name': '缺少结束标签',
+    'missing-whitespace-between-attributes': '属性之间没有空格',
+    'nested-comment': '不允许注释嵌套',
+    'noncharacter-in-input-stream': '页面中不允许空字符',
+    'surrogate-in-input-stream': '页面中不允许使用私有字符 0xD800 ~ 0xDFFF',
+    'unexpected-character-in-attribute-name': '属性名称不合法',
+    'unexpected-character-in-unquoted-attribute-value': '属性值包含非法字符',
+    'unexpected-equals-sign-before-attribute-name': '非法的 \'=\' 字符',
+    'unexpected-null-character': '非法的空字符',
+    'unexpected-question-mark-instead-of-tag-name': '属性名中包含非法的 \'?\' 字符',
+    'unexpected-solidus-in-tag': '非法的 \'/\' 字符',
+    'end-tag-with-attributes': '结束标签不应该包含属性',
+    'duplicate-attribute': '重复的属性定义',
+    'non-void-html-element-start-tag-with-trailing-solidus': '非自闭合标签',
+    'attribute-value-invalid-unquoted': '属性值需要使用 \'\'\' 或 \'"\'包裹',
+    'unexpected-line-break': '非预期的换行',
+    'missing-expression-end-tag': '缺少 mustache 结束标签',
+    'missing-end-tag': '缺少结束标签',
+    'x-invalid-end-tag': '标签错误',
+    'x-invalid-directive': '错误的指令名称',
+    'x-expression-error': '错误的表达式',
+};
 var noParsingError = {
     meta: {
         type: 'problem',
@@ -900,14 +940,16 @@ var noParsingError = {
                     if (error.code && !options[error.code]) {
                         continue;
                     }
+                    const rawMessage = error.message.endsWith('.')
+                        ? error.message.slice(0, -1)
+                        : error.message;
+                    const message = messageZH[rawMessage] || rawMessage;
                     context.report({
                         node,
                         loc: { line: error.lineNumber, column: error.column },
                         message: 'Parsing error: {{message}}.',
                         data: {
-                            message: error.message.endsWith('.')
-                                ? error.message.slice(0, -1)
-                                : error.message,
+                            message,
                         },
                     });
                 }
@@ -930,10 +972,10 @@ var noUnaryOperator = {
     create(context) {
         return defineTemplateBodyVisitor(context, {
             'XMustache>XExpression UnaryExpression'(node) {
-                if (node.operator === '+' || node.operator === '-') {
+                if (node.operator === '+') {
                     context.report({
                         node,
-                        message: 'Unexpected mustache interpolation not support unary operator.',
+                        message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
                         loc: node.loc,
                         fix: null,
                     });
@@ -954,9 +996,6 @@ var noUselessMustache = {
             url: getRuleUrl('no-useless-mustache'),
         },
         fixable: 'code',
-        messages: {
-            unexpected: 'Unexpected mustache interpolation with a string literal value.',
-        },
         schema: [],
         type: 'problem',
     },
@@ -966,7 +1005,7 @@ var noUselessMustache = {
             if (!expression) {
                 context.report({
                     node,
-                    message: 'Unexpected empty mustache interpolation.',
+                    message: '不允许空的 mustache 表达式',
                     loc: node.loc,
                     fix: fixer => fixer.removeRange(node.range),
                 });
@@ -1002,7 +1041,7 @@ var validBind = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${node.key.rawName}' should have event name.`,
+                        message: `'${node.key.rawName}' 需要绑定事件名称`,
                     });
                 }
                 const isMustacheValue = ((_a = node.value[0]) === null || _a === void 0 ? void 0 : _a.type) === 'XMustache';
@@ -1012,7 +1051,7 @@ var validBind = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${node.key.rawName}' value should be 'literal' or 'mustache'.`,
+                        message: `'${node.key.rawName}' 值设置不正确`,
                     });
                 }
             },
@@ -1138,7 +1177,7 @@ var validComponentNesting = {
                     context.report({
                         node: node,
                         loc: node.loc,
-                        message: 'self close component shouldn\'t have children.',
+                        message: '自闭合的组件不能嵌套子组件',
                     });
                 }
                 if (withSrcCompoents.includes(node.name)
@@ -1147,7 +1186,7 @@ var validComponentNesting = {
                     context.report({
                         node: node,
                         loc: node.loc,
-                        message: `'${node.name}' with 'src' shouldn't have children.`,
+                        message: `'${node.name}' 带有 'src' 属性，不能嵌套子组件`,
                     });
                 }
                 if (topLevelCompoents.includes(node.name) && !isAtTopLevel(node)) {
@@ -1156,7 +1195,7 @@ var validComponentNesting = {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'top level component shouldn\'t nested in other component.',
+                            message: `'${node.name} 需要在最外层定义`,
                         });
                     }
                 }
@@ -1166,7 +1205,7 @@ var validComponentNesting = {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'component \'{{name}}\' shouldn\'t nested in component \'{{parentName}}\'.',
+                            message: '组件 \'{{name}}\' 不能嵌套在 \'{{parentName}}\' 中',
                             data: {
                                 name: node.name,
                                 parentName: parent.name,
@@ -1180,7 +1219,7 @@ var validComponentNesting = {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'component \'{{name}}\' should have children.',
+                            message: '\'{{name}}\' 标签不允许空',
                             data: {
                                 name: node.name,
                             },
@@ -1214,14 +1253,14 @@ var validElif = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}elif' should follow with '${prefix}if' or '${prefix}elif'.`,
+                        message: `'${prefix}elif' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
                     });
                 }
                 if (!isValidSingleMustacheOrExpression(node.value)) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}elif' value should be expression.`,
+                        message: `'${prefix}elif' 值不正确`,
                     });
                 }
             },
@@ -1252,21 +1291,21 @@ var validElse = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' should follow with '${prefix}if' or '${prefix}elif'.`,
+                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
                     });
                 }
                 if ((_a = node.value) === null || _a === void 0 ? void 0 : _a.length) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' should have no value.`,
+                        message: `'${prefix}else' 不支持设置值`,
                     });
                 }
                 if (hasDirective(element, 'elif')) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' and '${prefix}elif' directives can't exist on the same element.`,
+                        message: `'${prefix}else' 和 '${prefix}elif' 不可以同时设置在标签上`,
                     });
                 }
             },
@@ -1303,7 +1342,7 @@ var validFor = {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' value should be expression.`,
+                    message: `'${rawName}' 值为非空表达式`,
                 });
             }
         };
@@ -1316,7 +1355,7 @@ var validFor = {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' should has '${prefix}for'.`,
+                    message: `'${rawName}' 需要有匹配的 '${prefix}for'`,
                 });
             }
             else if (!ignoreDuplicateForItem) {
@@ -1327,14 +1366,14 @@ var validFor = {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                            message: `'${rawName}' 和 '${prefix}for' 重复定义`,
                         });
                     }
                     if (forValue.index && node.key.name === 'for-index') {
                         context.report({
                             node,
                             loc: node.loc,
-                            message: `'${rawName}' duplicate with '${prefix}for'.`,
+                            message: `'${rawName}' 和 '${prefix}for' 重复定义`,
                         });
                     }
                 }
@@ -1345,7 +1384,7 @@ var validFor = {
                 context.report({
                     node,
                     loc: node.loc,
-                    message: `'${rawName}' value should be literal text.`,
+                    message: `'${rawName}' 值需要是合法变量`,
                 });
             }
         };
@@ -1377,21 +1416,21 @@ var validIf = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}' and '${prefix}else' directives can't exist on the same element.`,
+                        message: `'${prefix}' 和 '${prefix}else' 不可以设置在同一个标签上`,
                     });
                 }
                 if (hasDirective(element, 'elif')) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}if' and '${prefix}elif' directives can't exist on the same element.`,
+                        message: `'${prefix}if' 和 '${prefix}elif' 不可以设置在同一个标签上`,
                     });
                 }
                 if (!isValidSingleMustacheOrExpression(node.value)) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}if' value should be expression.`,
+                        message: `'${prefix}if' 值为非空表达式`,
                     });
                 }
             },

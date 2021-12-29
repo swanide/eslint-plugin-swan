@@ -14,9 +14,6 @@ export default {
             url: getRuleUrl('no-useless-mustache'),
         },
         fixable: 'code',
-        messages: {
-            unexpected: 'Unexpected mustache interpolation with a string literal value.',
-        },
         schema: [],
         type: 'problem',
     },
@@ -32,7 +29,7 @@ export default {
             if (!expression) {
                 context.report({
                     node,
-                    message: 'Unexpected empty mustache interpolation.',
+                    message: '不允许空的 mustache 表达式',
                     loc: node.loc,
                     fix: fixer => fixer.removeRange(node.range),
                 });

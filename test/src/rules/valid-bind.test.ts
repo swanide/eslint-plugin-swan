@@ -49,7 +49,7 @@ ruleTester.run('swan/valid-bind', rule as Rule.RuleModule, {
             code: '<view bindtap=""></view>',
             errors: [
                 {
-                    message: '\'bindtap\' value should be \'literal\' or \'mustache\'.',
+                    message: '\'bindtap\' 值设置不正确',
                     type: 'XDirective',
                 },
             ],
@@ -59,7 +59,7 @@ ruleTester.run('swan/valid-bind', rule as Rule.RuleModule, {
             code: '<view bind:tap="{{}}"></view>',
             errors: [
                 {
-                    message: '\'bind:tap\' value should be \'literal\' or \'mustache\'.',
+                    message: '\'bind:tap\' 值设置不正确',
                     type: 'XDirective',
                 },
             ],
@@ -69,7 +69,7 @@ ruleTester.run('swan/valid-bind', rule as Rule.RuleModule, {
             code: '<view catchtap="{{}}"></view>',
             errors: [
                 {
-                    message: '\'catchtap\' value should be \'literal\' or \'mustache\'.',
+                    message: '\'catchtap\' 值设置不正确',
                     type: 'XDirective',
                 },
             ],
@@ -79,7 +79,7 @@ ruleTester.run('swan/valid-bind', rule as Rule.RuleModule, {
             code: '<view capture-bind:tap=""></view>',
             errors: [
                 {
-                    message: '\'capture-bind:tap\' value should be \'literal\' or \'mustache\'.',
+                    message: '\'capture-bind:tap\' 值设置不正确',
                     type: 'XDirective',
                 },
             ],
@@ -89,7 +89,7 @@ ruleTester.run('swan/valid-bind', rule as Rule.RuleModule, {
             code: '<view capture-catch:tap="{{}}"></view>',
             errors: [
                 {
-                    message: '\'capture-catch:tap\' value should be \'literal\' or \'mustache\'.',
+                    message: '\'capture-catch:tap\' 值设置不正确',
                     type: 'XDirective',
                 },
             ],

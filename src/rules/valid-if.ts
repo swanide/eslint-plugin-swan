@@ -28,14 +28,14 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}' and '${prefix}else' directives can't exist on the same element.`,
+                        message: `'${prefix}' 和 '${prefix}else' 不可以设置在同一个标签上`,
                     });
                 }
                 if (hasDirective(element, 'elif')) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}if' and '${prefix}elif' directives can't exist on the same element.`,
+                        message: `'${prefix}if' 和 '${prefix}elif' 不可以设置在同一个标签上`,
                     });
                 }
 
@@ -43,7 +43,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}if' value should be expression.`,
+                        message: `'${prefix}if' 值为非空表达式`,
                     });
                 }
             },

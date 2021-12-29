@@ -77,7 +77,7 @@ export default {
                     context.report({
                         node: node,
                         loc: node.loc,
-                        message: 'self close component shouldn\'t have children.',
+                        message: '自闭合的组件不能嵌套子组件',
                     });
                 }
 
@@ -89,7 +89,7 @@ export default {
                     context.report({
                         node: node,
                         loc: node.loc,
-                        message: `'${node.name}' with 'src' shouldn't have children.`,
+                        message: `'${node.name}' 带有 'src' 属性，不能嵌套子组件`,
                     });
                 }
 
@@ -101,7 +101,7 @@ export default {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'top level component shouldn\'t nested in other component.',
+                            message: `'${node.name} 需要在最外层定义`,
                         });
                     }
                 }
@@ -112,7 +112,7 @@ export default {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'component \'{{name}}\' shouldn\'t nested in component \'{{parentName}}\'.',
+                            message: '组件 \'{{name}}\' 不能嵌套在 \'{{parentName}}\' 中',
                             data: {
                                 name: node.name,
                                 parentName: parent.name,
@@ -128,7 +128,7 @@ export default {
                         context.report({
                             node: node,
                             loc: node.loc,
-                            message: 'component \'{{name}}\' should have children.',
+                            message: '\'{{name}}\' 标签不允许空',
                             data: {
                                 name: node.name,
                             },

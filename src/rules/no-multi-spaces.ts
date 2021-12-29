@@ -64,8 +64,8 @@ export default {
                         start: prevToken.loc.end,
                         end: token.loc.start,
                     },
-                    message: `Multiple spaces found before '${
-                        sourceCode.getText(token as estree.Node)}'.`,
+                    message: `${
+                        sourceCode.getText(token as estree.Node)} 前有多个空格，只允许 1 个空格`,
                     /* eslint-disable-next-line no-loop-func */
                     fix: fixer => fixer.replaceTextRange([prevToken.range[1], token.range[0]], ' '),
                 });

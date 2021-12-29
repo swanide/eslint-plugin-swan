@@ -16,7 +16,7 @@ export default {
         },
         fixable: 'code',
         messages: {
-            unexpected: 'missing end tag',
+            unexpected: '没有结束标签',
         },
         schema: [],
     },
@@ -35,7 +35,7 @@ export default {
                         context.report({
                             node: node.startTag,
                             loc: node.startTag.loc,
-                            message: '\'<{{name}}>\' should have end tag.',
+                            message: '\'<{{name}}>\' 没有结束标签',
                             data: {name},
                         });
                     }

@@ -53,14 +53,14 @@ export default {
                     if (openBrace.range[1] === firstToken.range[0]) {
                         context.report({
                             node: openBrace,
-                            message: 'Expected 1 space after \'{{\', but not found.',
+                            message: '\'{{\' 后面需要一个空格',
                             fix: fixer => fixer.insertTextAfter(openBrace as estree.Node, ' '),
                         });
                     }
                     if (closeBrace.range[0] === lastToken.range[1]) {
                         context.report({
                             node: closeBrace,
-                            message: 'Expected 1 space before \'}}\', but not found.',
+                            message: '\'}}\' 前面需要一个空格',
                             fix: fixer => fixer.insertTextBefore(closeBrace as estree.Node, ' '),
                         });
                     }
@@ -72,7 +72,7 @@ export default {
                                 start: openBrace.loc.start,
                                 end: firstToken.loc.start,
                             },
-                            message: 'Expected no space after \'{{\'.',
+                            message: '\'{{\' 后面不允许空格',
                             fix: fixer =>
                                 fixer.removeRange([openBrace.range[1], firstToken.range[0]]),
                         });
@@ -83,7 +83,7 @@ export default {
                                 start: lastToken.loc.end,
                                 end: closeBrace.loc.end,
                             },
-                            message: 'Expected no space before \'}}\'.',
+                            message: '\'}}\' 前面不允许空格',
                             fix: fixer =>
                                 fixer.removeRange([lastToken.range[1], closeBrace.range[0]]),
                         });

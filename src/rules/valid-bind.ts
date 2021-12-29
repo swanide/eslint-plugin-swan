@@ -33,7 +33,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${node.key.rawName}' should have event name.`,
+                        message: `'${node.key.rawName}' 需要绑定事件名称`,
                     });
                 }
                 const isMustacheValue = node.value[0]?.type === 'XMustache';
@@ -46,7 +46,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${node.key.rawName}' value should be 'literal' or 'mustache'.`,
+                        message: `'${node.key.rawName}' 值设置不正确`,
                     });
                 }
             },

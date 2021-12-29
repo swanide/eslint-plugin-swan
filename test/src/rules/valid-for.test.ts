@@ -45,7 +45,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for=""></view>',
             errors: [
                 {
-                    message: '\'s-for\' value should be expression.',
+                    message: '\'s-for\' 值为非空表达式',
                     type: 'XDirective',
                 },
             ],
@@ -55,7 +55,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for="{{}}"></view>',
             errors: [
                 {
-                    message: '\'s-for\' value should be expression.',
+                    message: '\'s-for\' 值为非空表达式',
                     type: 'XDirective',
                 },
             ],
@@ -65,7 +65,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for-item="abc"></view>',
             errors: [
                 {
-                    message: '\'s-for-item\' should has \'s-for\'.',
+                    message: '\'s-for-item\' 需要有匹配的 \'s-for\'',
                     type: 'XDirective',
                 },
             ],
@@ -75,7 +75,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for-index="abc"></view>',
             errors: [
                 {
-                    message: '\'s-for-index\' should has \'s-for\'.',
+                    message: '\'s-for-index\' 需要有匹配的 \'s-for\'',
                     type: 'XDirective',
                 },
             ],
@@ -85,7 +85,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for="{{1}}" s-for-item=""></view>',
             errors: [
                 {
-                    message: '\'s-for-item\' value should be literal text.',
+                    message: '\'s-for-item\' 值需要是合法变量',
                     type: 'XDirective',
                 },
             ],
@@ -95,7 +95,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for="{{1}}" s-for-item="{{123}}"></view>',
             errors: [
                 {
-                    message: '\'s-for-item\' value should be literal text.',
+                    message: '\'s-for-item\' 值需要是合法变量',
                     type: 'XDirective',
                 },
             ],
@@ -105,11 +105,11 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for="item,index in expr" s-for-item="item" s-for-index="index"></view>',
             errors: [
                 {
-                    message: '\'s-for-item\' duplicate with \'s-for\'.',
+                    message: '\'s-for-item\' 和 \'s-for\' 重复定义',
                     type: 'XDirective',
                 },
                 {
-                    message: '\'s-for-index\' duplicate with \'s-for\'.',
+                    message: '\'s-for-index\' 和 \'s-for\' 重复定义',
                     type: 'XDirective',
                 },
             ],
@@ -119,7 +119,7 @@ ruleTester.run('swan/valid-for', rule as Rule.RuleModule, {
             code: '<view s-for="item in expr trackBy item.id" s-for-item="item" s-for-index="index"></view>',
             errors: [
                 {
-                    message: '\'s-for-item\' duplicate with \'s-for\'.',
+                    message: '\'s-for-item\' 和 \'s-for\' 重复定义',
                     type: 'XDirective',
                 },
             ],

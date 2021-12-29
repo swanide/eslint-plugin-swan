@@ -38,7 +38,7 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: 'Duplicate directive \'{{name}}\'.',
+                        message: '\'{{name}}\' 属性名重复',
                         data: {name},
                     });
                 }

@@ -22,10 +22,10 @@ export default {
 
         return defineTemplateBodyVisitor(context, {
             'XMustache>XExpression UnaryExpression'(node: UnaryExpression) {
-                if (node.operator === '+' || node.operator === '-') {
+                if (node.operator === '+') {
                     context.report({
                         node,
-                        message: 'Unexpected mustache interpolation not support unary operator.',
+                        message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
                         loc: node.loc,
                         fix: null,
                     });
