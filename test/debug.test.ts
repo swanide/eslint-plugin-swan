@@ -7,12 +7,15 @@
 import assert from 'assert';
 import {Linter} from 'eslint';
 
-const ruleName = 'no-unary-operator';
+const ruleName = 'array-bracket-spacing';
 
 function lint() {
     const code = `
-<view class="modal-item" catchtap="delete">{{+abc}}</view>
+<block s-for="{{content.items}}" s-for-index="eleIndex">
+</block>
 
+<block s-for="{{[1,2,3]}}" s-for-index="eleIndex">
+</block>
 `;
     const config = {
         parser: '@baidu/swan-eslint-parser',
@@ -23,7 +26,6 @@ function lint() {
     const linter = new Linter();
     linter.defineParser('@baidu/swan-eslint-parser', require('@baidu/swan-eslint-parser'));
     linter.defineRule(ruleName, require(`../src/rules/${ruleName}`).default);
-
     const messages = linter.verify(code, config as any, `${__dirname}/index.swan`);
     console.log(messages);
     assert(messages.length === 0, 'should have no errors');

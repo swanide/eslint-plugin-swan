@@ -187,7 +187,7 @@ var __rest$1 = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a$1 = base.overrides[0], { rules: baseRules } = _a$1, baseOverwritesSwan = __rest$1(_a$1, ["rules"]);
 var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/array-bracket-spacing': 2, '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/dot-notation': 2, '@baidu/swan/key-spacing': 2, '@baidu/swan/keyword-spacing': 2, '@baidu/swan/no-useless-concat': 2 }) }),
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/array-bracket-spacing': 1, '@baidu/swan/dot-notation': 1, '@baidu/swan/key-spacing': 1, '@baidu/swan/keyword-spacing': 1, '@baidu/swan/no-useless-concat': 2 }) }),
     ] });
 
 var __rest = (undefined && undefined.__rest) || function (s, e) {
@@ -203,7 +203,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = recommended.overrides[0], { rules: recommendedRules } = _a, recommendedOverwritesSwan = __rest(_a, ["rules"]);
 var strict = Object.assign(Object.assign({}, recommended), { overrides: [
-        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 120], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 2, '@baidu/swan/mustache-interpolation-spacing': [2, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
+        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 120], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
