@@ -7,15 +7,15 @@
 import assert from 'assert';
 import {Linter} from 'eslint';
 
-const ruleName = 'array-bracket-spacing';
+const ruleName = 'xml-indent';
 
 function lint() {
     const code = `
-<block s-for="{{content.items}}" s-for-index="eleIndex">
-</block>
-
-<block s-for="{{[1,2,3]}}" s-for-index="eleIndex">
-</block>
+<view
+    hover-class="{{
+        status === 0
+    }}">
+</view>
 `;
     const config = {
         parser: '@baidu/swan-eslint-parser',

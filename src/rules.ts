@@ -25,6 +25,7 @@ import validElif from './rules/valid-elif';
 import validElse from './rules/valid-else';
 import validFor from './rules/valid-for';
 import validIf from './rules/valid-if';
+import xmlIndent from './rules/xml-indent';
 export default {
     'array-bracket-spacing': arrayBracketSpacing,
     'arrow-spacing': arrowSpacing,
@@ -50,4 +51,5 @@ export default {
     'valid-else': validElse,
     'valid-for': validFor,
     'valid-if': validIf,
+    'xml-indent': xmlIndent,
 };

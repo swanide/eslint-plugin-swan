@@ -10,7 +10,7 @@ const ruleTester = new RuleTester({
     parser: require.resolve('@baidu/swan-eslint-parser'),
 });
 
-ruleTester.run('swan/no-unary-operator', rule as Rule.RuleModule, {
+ruleTester.run('no-unary-operator', rule as Rule.RuleModule, {
 
     valid: [
         {

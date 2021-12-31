@@ -5,6 +5,7 @@
 import * as eslint from 'eslint';
 import type swan from '@baidu/swan-eslint-parser';
 
+
 type ReportDescriptor = eslint.Rule.ReportDescriptor | {
     node: swan.ast.XNode | swan.ast.Token;
 };
@@ -16,3 +17,5 @@ interface RuleContext extends eslint.Rule.RuleContext {
 
     getSourceCode(): SourceCode;
 }
+
+type RuleFixer = eslint.Rule.RuleFixer;
