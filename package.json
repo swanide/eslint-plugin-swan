@@ -26,7 +26,7 @@
     },
     "author": "kekee000@gmail.com",
     "dependencies": {
-        "@baidu/swan-eslint-parser": "^0.0.1-beta.9",
+        "@baidu/swan-eslint-parser": "^0.0.1-beta.10",
         "@types/eslint": "^7.29.0"
     },
     "devDependencies": {

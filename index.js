@@ -187,7 +187,11 @@ var __rest$1 = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a$1 = base.overrides[0], { rules: baseRules } = _a$1, baseOverwritesSwan = __rest$1(_a$1, ["rules"]);
 var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/xml-indent': [1, 4, { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false }], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/array-bracket-spacing': 1, '@baidu/swan/dot-notation': 1, '@baidu/swan/key-spacing': 1, '@baidu/swan/keyword-spacing': 1, '@baidu/swan/no-useless-concat': 2 }) }),
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/xml-indent': [
+                    1,
+                    4,
+                    { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false }
+                ], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/array-bracket-spacing': 1, '@baidu/swan/dot-notation': 1, '@baidu/swan/key-spacing': 1, '@baidu/swan/keyword-spacing': 1, '@baidu/swan/no-useless-concat': 2 }) }),
     ] });
 
 var __rest = (undefined && undefined.__rest) || function (s, e) {
