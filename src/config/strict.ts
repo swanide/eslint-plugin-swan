@@ -13,8 +13,12 @@ export default {
             ...recommendedOverwritesSwan,
             rules: {
                 ...recommendedRules,
-                'max-len': [2, 120],
-                '@baidu/swan/xml-indent': [2, 4, {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false}],
+                'max-len': [2, 200],
+                '@baidu/swan/xml-indent': [
+                    2,
+                    4,
+                    {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false},
+                ],
                 '@baidu/swan/valid-for': [2, {ignoreDuplicateForItem: false}],
                 '@baidu/swan/valid-component-nesting': [1, {allowEmptyBlock: false, ignoreEmptyBlock: ['view']}],
                 '@baidu/swan/no-multi-spaces': 1,

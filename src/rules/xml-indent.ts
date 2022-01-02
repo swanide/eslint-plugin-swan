@@ -16,7 +16,7 @@ export default {
 
         const tokenStore = context.parserServices.getTemplateBodyTokenStore();
         const visitor = defineVisitor(context, tokenStore, {
-            baseIndent: 1
+            baseIndent: 1,
         });
 
         return context.parserServices.defineTemplateBodyVisitor(visitor);
@@ -26,12 +26,12 @@ export default {
         docs: {
             description: 'enforce consistent indentation',
             categories: ['strongly-recommended'],
-            url: getRuleUrl('xml-indent')
+            url: getRuleUrl('xml-indent'),
         },
         fixable: 'whitespace',
         schema: [
             {
-                anyOf: [{type: 'integer', minimum: 1}, {enum: ['tab']}]
+                anyOf: [{type: 'integer', minimum: 1}, {enum: ['tab']}],
             },
             {
                 type: 'object',
@@ -47,11 +47,11 @@ export default {
                                 properties: {
                                     startTag: {type: 'integer', minimum: 0},
                                     endTag: {type: 'integer', minimum: 0},
-                                    selfClosingTag: {type: 'integer', minimum: 0}
+                                    selfClosingTag: {type: 'integer', minimum: 0},
                                 },
-                                additionalProperties: false
-                            }
-                        ]
+                                additionalProperties: false,
+                            },
+                        ],
                     },
                     switchCase: {type: 'integer', minimum: 0},
                     alignAttributesVertically: {type: 'boolean'},
@@ -61,15 +61,15 @@ export default {
                             allOf: [
                                 {type: 'string'},
                                 {not: {type: 'string', pattern: ':exit$'}},
-                                {not: {type: 'string', pattern: '^\\s*$'}}
-                            ]
+                                {not: {type: 'string', pattern: '^\\s*$'}},
+                            ],
                         },
                         uniqueItems: true,
-                        additionalItems: false
-                    }
+                        additionalItems: false,
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
-    }
+                additionalProperties: false,
+            },
+        ],
+    },
 };

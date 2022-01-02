@@ -190,7 +190,7 @@ var recommended = Object.assign(Object.assign({}, base), { overrides: [
         Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/xml-indent': [
                     1,
                     4,
-                    { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false }
+                    { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false },
                 ], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/array-bracket-spacing': 1, '@baidu/swan/dot-notation': 1, '@baidu/swan/key-spacing': 1, '@baidu/swan/keyword-spacing': 1, '@baidu/swan/no-useless-concat': 2 }) }),
     ] });
 
@@ -207,7 +207,11 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = recommended.overrides[0], { rules: recommendedRules } = _a, recommendedOverwritesSwan = __rest(_a, ["rules"]);
 var strict = Object.assign(Object.assign({}, recommended), { overrides: [
-        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 120], '@baidu/swan/xml-indent': [2, 4, { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false }], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
+        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 200], '@baidu/swan/xml-indent': [
+                    2,
+                    4,
+                    { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false },
+                ], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
@@ -1527,21 +1531,21 @@ const KNOWN_NODES = new Set([
 ]);
 const NON_STANDARD_KNOWN_NODES = new Set([
     'ExperimentalRestProperty',
-    'ExperimentalSpreadProperty'
+    'ExperimentalSpreadProperty',
 ]);
 const LT_CHAR = /[\r\n\u2028\u2029]/;
 const LINES = /[^\r\n\u2028\u2029]+(?:$|\r\n|[\r\n\u2028\u2029])/g;
 const BLOCK_COMMENT_PREFIX = /^\s*\*/;
 const ITERATION_OPTS = Object.freeze({
     includeComments: true,
-    filter: isNotWhitespace
+    filter: isNotWhitespace,
 });
 const PREFORMATTED_ELEMENT_NAMES = ['textarea'];
 function parseOptions(type, options, defaultOptions) {
     const ret = Object.assign({ indentChar: ' ', indentSize: 2, baseIndent: 0, scriptBaseIndent: 0, attribute: 1, closeBracket: {
             startTag: 0,
             endTag: 0,
-            selfClosingTag: 0
+            selfClosingTag: 0,
         }, switchCase: 0, alignAttributesVertically: true, ignores: [] }, defaultOptions);
     if (Number.isSafeInteger(type)) {
         ret.indentSize = Number(type);
@@ -1564,7 +1568,7 @@ function parseOptions(type, options, defaultOptions) {
         ret.closeBracket = {
             startTag: num,
             endTag: num,
-            selfClosingTag: num
+            selfClosingTag: num,
         };
     }
     else if (options.closeBracket) {
@@ -1660,7 +1664,7 @@ function isClosingToken(token) {
         || (token.type === 'Punctuator' && (token.value === ')' || token.value === '}' || token.value === ']'))));
 }
 const defineVisitor = function create(context, tokenStore, defaultOptions) {
-    if (!context.getFilename().match(/\.swan$/)) {
+    if (!(/\.swan$/.exec(context.getFilename()))) {
         return {};
     }
     const options = parseOptions(context.options[0], context.options[1] || {}, defaultOptions);
@@ -1677,7 +1681,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                     baseToken,
                     offset,
                     baseline: false,
-                    expectedIndent: void 0
+                    expectedIndent: void 0,
                 });
             }
         }
@@ -1686,7 +1690,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                 baseToken,
                 offset,
                 baseline: false,
-                expectedIndent: void 0
+                expectedIndent: void 0,
             });
         }
     }
@@ -1704,7 +1708,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                 || token.type === 'HTMLRCDataText'
                 || token.type === 'HTMLTagOpen'
                 || token.type === 'HTMLEndTagOpen'
-                || token.type === 'HTMLComment')
+                || token.type === 'HTMLComment'),
         };
         for (const token of tokenStore.getTokensBetween(node.startTag, endToken, option)) {
             ignoreTokens.add(token);
@@ -1715,8 +1719,8 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
         borderOffset |= 0;
         let firstToken = tokenStore.getFirstToken(node);
         let lastToken = tokenStore.getLastToken(node);
-        let t;
-        let u;
+        let t = null;
+        let u = null;
         while ((t = tokenStore.getTokenBefore(firstToken)) != null
             && (u = tokenStore.getTokenAfter(lastToken)) != null
             && isLeftParen(t)
@@ -1728,7 +1732,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
         return { firstToken, lastToken };
     }
     function processNodeList(nodeList, left, right, offset, alignVertically = true) {
-        let t;
+        let t = null;
         const leftToken = left && tokenStore.getFirstToken(left);
         const rightToken = right && tokenStore.getFirstToken(right);
         if (nodeList.length >= 1) {
@@ -1867,7 +1871,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                 baseToken: null,
                 offset: 0,
                 baseline: false,
-                expectedIndent
+                expectedIndent,
             });
         }
     }
@@ -1908,7 +1912,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                     if (baseOffsetInfo != null
                         && baseOffsetInfo.expectedIndent != null
                         && (i === 0 || !baseOffsetInfo.baseline)) {
-                        expectedIndents.push(baseOffsetInfo.expectedIndent + offsetInfo.offset * options.indentSize);
+                        expectedIndents.push(+baseOffsetInfo.expectedIndent + offsetInfo.offset * options.indentSize);
                         if (baseOffsetInfo.baseline) {
                             break;
                         }
@@ -1921,7 +1925,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
         }
         return {
             expectedIndent: expectedIndents[0],
-            expectedBaseIndent: expectedIndents.reduce((a, b) => Math.min(a, b))
+            expectedBaseIndent: expectedIndents.reduce((a, b) => Math.min(a, b)),
         };
     }
     function getIndentText(firstToken) {
@@ -1965,14 +1969,14 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                 context.report({
                     loc: {
                         start: { line, column: i },
-                        end: { line, column: i + 1 }
+                        end: { line, column: i + 1 },
                     },
                     message: 'Expected {{expected}} character, but found {{actual}} character.',
                     data: {
                         expected: JSON.stringify(options.indentChar),
-                        actual: JSON.stringify(indentText[i])
+                        actual: JSON.stringify(indentText[i]),
                     },
-                    fix: defineFix(token, actualIndent, expectedIndent)
+                    fix: defineFix(token, actualIndent, expectedIndent),
                 });
                 return;
             }
@@ -1982,7 +1986,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
             context.report({
                 loc: {
                     start: { line, column: 0 },
-                    end: { line, column: actualIndent }
+                    end: { line, column: actualIndent },
                 },
                 message: 'Expected indentation of {{expectedIndent}} {{unit}}{{expectedIndentPlural}}'
                     + ' but found {{actualIndent}} {{unit}}{{actualIndentPlural}}.',
@@ -1991,9 +1995,9 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
                     actualIndent: `${actualIndent}`,
                     unit,
                     expectedIndentPlural: expectedIndent === 1 ? '' : 's',
-                    actualIndentPlural: actualIndent === 1 ? '' : 's'
+                    actualIndentPlural: actualIndent === 1 ? '' : 's',
                 },
-                fix: defineFix(token, actualIndent, expectedIndent)
+                fix: defineFix(token, actualIndent, expectedIndent),
             });
         }
     }
@@ -2455,7 +2459,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
             for (let i = 1; i < prefixTokens.length; ++i) {
                 setOffset(prefixTokens[i], 0, prefixTokens[i - 1]);
             }
-            let lastKeyToken;
+            let lastKeyToken = null;
             if (node.computed) {
                 const keyLeftToken = (tokenStore.getFirstToken(node, isLeftBracket));
                 const keyToken = tokenStore.getTokenAfter(keyLeftToken);
@@ -2655,7 +2659,7 @@ const defineVisitor = function create(context, tokenStore, defaultOptions) {
             if (tokensOnSameLine.length >= 1 && tokensOnSameLine.some(isNotComment)) {
                 validate(tokensOnSameLine, comments, lastValidatedToken);
             }
-        }
+        },
     });
 };
 
@@ -2666,7 +2670,7 @@ var xmlIndent = {
         }
         const tokenStore = context.parserServices.getTemplateBodyTokenStore();
         const visitor = defineVisitor(context, tokenStore, {
-            baseIndent: 1
+            baseIndent: 1,
         });
         return context.parserServices.defineTemplateBodyVisitor(visitor);
     },
@@ -2675,12 +2679,12 @@ var xmlIndent = {
         docs: {
             description: 'enforce consistent indentation',
             categories: ['strongly-recommended'],
-            url: getRuleUrl('xml-indent')
+            url: getRuleUrl('xml-indent'),
         },
         fixable: 'whitespace',
         schema: [
             {
-                anyOf: [{ type: 'integer', minimum: 1 }, { enum: ['tab'] }]
+                anyOf: [{ type: 'integer', minimum: 1 }, { enum: ['tab'] }],
             },
             {
                 type: 'object',
@@ -2696,11 +2700,11 @@ var xmlIndent = {
                                 properties: {
                                     startTag: { type: 'integer', minimum: 0 },
                                     endTag: { type: 'integer', minimum: 0 },
-                                    selfClosingTag: { type: 'integer', minimum: 0 }
+                                    selfClosingTag: { type: 'integer', minimum: 0 },
                                 },
-                                additionalProperties: false
-                            }
-                        ]
+                                additionalProperties: false,
+                            },
+                        ],
                     },
                     switchCase: { type: 'integer', minimum: 0 },
                     alignAttributesVertically: { type: 'boolean' },
@@ -2710,17 +2714,17 @@ var xmlIndent = {
                             allOf: [
                                 { type: 'string' },
                                 { not: { type: 'string', pattern: ':exit$' } },
-                                { not: { type: 'string', pattern: '^\\s*$' } }
-                            ]
+                                { not: { type: 'string', pattern: '^\\s*$' } },
+                            ],
                         },
                         uniqueItems: true,
-                        additionalItems: false
-                    }
+                        additionalItems: false,
+                    },
                 },
-                additionalProperties: false
-            }
-        ]
-    }
+                additionalProperties: false,
+            },
+        ],
+    },
 };
 
 var rules = {

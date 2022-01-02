@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /**
  * @author Toru Nagashima <https://github.com/mysticatea>
  * See LICENSE file in root directory for full license.
  */
-/* eslint-disable max-lines-per-function, complexity, max-lines, no-negated-condition, line-comment-position */
+
 import type estree from 'estree';
 import type swan from '@baidu/swan-eslint-parser';
 import {ParserServices} from '@baidu/swan-eslint-parser';
@@ -94,14 +95,14 @@ const KNOWN_NODES = new Set([
 ]);
 const NON_STANDARD_KNOWN_NODES = new Set([
     'ExperimentalRestProperty',
-    'ExperimentalSpreadProperty'
+    'ExperimentalSpreadProperty',
 ]);
 const LT_CHAR = /[\r\n\u2028\u2029]/;
 const LINES = /[^\r\n\u2028\u2029]+(?:$|\r\n|[\r\n\u2028\u2029])/g;
 const BLOCK_COMMENT_PREFIX = /^\s*\*/;
 const ITERATION_OPTS = Object.freeze({
     includeComments: true,
-    filter: isNotWhitespace
+    filter: isNotWhitespace,
 });
 const PREFORMATTED_ELEMENT_NAMES = ['textarea'];
 
@@ -131,7 +132,11 @@ type TokenStore = ParserServices.TokenStore;
  * @param defaultOptions The default value of options.
  * @returns Normalized options.
  */
-function parseOptions(type: number | 'tab', options: IndentUserOptions, defaultOptions: Partial<IndentOptions>): IndentOptions {
+function parseOptions(
+    type: number | 'tab',
+    options: IndentUserOptions,
+    defaultOptions: Partial<IndentOptions>
+): IndentOptions {
 
     const ret: IndentOptions = {
         indentChar: ' ',
@@ -142,12 +147,12 @@ function parseOptions(type: number | 'tab', options: IndentUserOptions, defaultO
         closeBracket: {
             startTag: 0,
             endTag: 0,
-            selfClosingTag: 0
+            selfClosingTag: 0,
         },
         switchCase: 0,
         alignAttributesVertically: true,
         ignores: [],
-        ...defaultOptions
+        ...defaultOptions,
     };
 
     if (Number.isSafeInteger(type)) {
@@ -174,7 +179,7 @@ function parseOptions(type: number | 'tab', options: IndentUserOptions, defaultO
         ret.closeBracket = {
             startTag: num,
             endTag: num,
-            selfClosingTag: num
+            selfClosingTag: num,
         };
     }
     else if (options.closeBracket) {
@@ -182,7 +187,7 @@ function parseOptions(type: number | 'tab', options: IndentUserOptions, defaultO
             startTag: 0,
             endTag: 0,
             selfClosingTag: 0,
-            ...options.closeBracket
+            ...options.closeBracket,
         };
     }
     if (Number.isSafeInteger(options.switchCase)) {
@@ -414,7 +419,7 @@ export const defineVisitor = function create(
     tokenStore: TokenStore,
     defaultOptions: Partial<IndentOptions>
 ) {
-    if (!context.getFilename().match(/\.swan$/)) {
+    if (!(/\.swan$/.exec(context.getFilename()))) {
         return {};
     }
 
@@ -434,7 +439,7 @@ export const defineVisitor = function create(
    * @param baseToken The token of the base offset.
    * @returns
    */
-    function setOffset(token: swan.ast.Token | swan.ast.Token[], offset: number, baseToken: swan.ast.Token ) {
+    function setOffset(token: swan.ast.Token | swan.ast.Token[], offset: number, baseToken: swan.ast.Token) {
         if (!token) {
             return;
         }
@@ -444,7 +449,7 @@ export const defineVisitor = function create(
                     baseToken,
                     offset,
                     baseline: false,
-                    expectedIndent: void 0
+                    expectedIndent: void 0,
                 });
             }
         }
@@ -453,7 +458,7 @@ export const defineVisitor = function create(
                 baseToken,
                 offset,
                 baseline: false,
-                expectedIndent: void 0
+                expectedIndent: void 0,
             });
         }
     }
@@ -486,7 +491,7 @@ export const defineVisitor = function create(
                 || token.type === 'HTMLTagOpen'
                 || token.type === 'HTMLEndTagOpen'
                 || token.type === 'HTMLComment'
-            )
+            ),
         };
         for (const token of tokenStore.getTokensBetween(
             node.startTag,
@@ -502,7 +507,10 @@ export const defineVisitor = function create(
      * Get the first and last tokens of the given node.
      * If the node is parenthesized, this gets the outermost parentheses.
      * @param node The node to get.
-     * @param [borderOffset] The least offset of the first token. Defailt is 0. This value is used to prevent false positive in the following case: `(a) => {}` The parentheses are enclosing the whole parameter part rather than the first parameter, but this offset parameter is needed to distinguish.
+     * @param borderOffset The least offset of the first token.
+     * Defailt is 0. This value is used to prevent false positive in the following case:
+     *  `(a) => {}` The parentheses are enclosing the whole parameter part rather than the first parameter,
+     *  but this offset parameter is needed to distinguish.
      * @returns The gotten tokens.
      */
     function getFirstAndLastTokens(node: swan.ast.Node, borderOffset = 0) {
@@ -511,8 +519,8 @@ export const defineVisitor = function create(
         let lastToken = tokenStore.getLastToken(node);
 
         // Get the outermost left parenthesis if it's parenthesized.
-        let t: swan.ast.Token;
-        let u: swan.ast.Token;
+        let t: swan.ast.Token = null;
+        let u: swan.ast.Token = null;
         while (
             (t = tokenStore.getTokenBefore(firstToken)) != null
             && (u = tokenStore.getTokenAfter(lastToken)) != null
@@ -535,7 +543,8 @@ export const defineVisitor = function create(
      * @param left The left parenthesis token.
      * @param right The right parenthesis token.
      * @param offset The offset to set.
-     * @param alignVertically The flag to align vertically. If `false`, this doesn't align vertically even if the first node is not at beginning of line.
+     * @param alignVertically The flag to align vertically. If `false`, this doesn't align vertically even if
+     *  the first node is not at beginning of line.
      * @returns
      */
     function processNodeList(
@@ -545,7 +554,7 @@ export const defineVisitor = function create(
         offset: number,
         alignVertically = true
     ) {
-        let t: swan.ast.Token;
+        let t: swan.ast.Token = null;
         const leftToken = left && tokenStore.getFirstToken(left);
         const rightToken = right && tokenStore.getFirstToken(right);
 
@@ -555,6 +564,7 @@ export const defineVisitor = function create(
             const alignTokensBeforeBaseToken = [];
             const alignTokens = [];
 
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < nodeList.length; ++i) {
                 const node = nodeList[i];
                 if (node == null) {
@@ -566,7 +576,8 @@ export const defineVisitor = function create(
                     lastToken != null ? lastToken.range[1] : 0
                 );
 
-                // Collect comma/comment tokens between the last token of the previous node and the first token of this node.
+                /* Collect comma/comment tokens between the last
+                    token of the previous node and the first token of this node. */
                 if (lastToken != null) {
                     t = lastToken;
                     while (
@@ -690,7 +701,7 @@ export const defineVisitor = function create(
      * Check whether a given token is the first token of:
      *
      * - ExpressionStatement
-     * - XExpressionContainer
+     * - XExpression
      * - A parameter of CallExpression/NewExpression
      * - An element of ArrayExpression
      * - An expression of SequenceExpression
@@ -767,7 +778,7 @@ export const defineVisitor = function create(
                 baseToken: null,
                 offset: 0,
                 baseline: false,
-                expectedIndent
+                expectedIndent,
             });
         }
     }
@@ -814,7 +825,7 @@ export const defineVisitor = function create(
      * @paramtokens Tokens which are on the same line.
      * @returns Correct indentation. If it failed to calculate then `null`.
      */
-    function getExpectedIndents(tokens: swan.ast.Token[]) {
+    function getExpectedIndents(tokens: swan.ast.Token[]): {expectedIndent: number, expectedBaseIndent: number} {
         const expectedIndents = [];
 
         for (let i = 0; i < tokens.length; ++i) {
@@ -830,7 +841,7 @@ export const defineVisitor = function create(
                     if (baseOffsetInfo != null
                         && baseOffsetInfo.expectedIndent != null
                         && (i === 0 || !baseOffsetInfo.baseline)) {
-                        expectedIndents.push(baseOffsetInfo.expectedIndent + offsetInfo.offset * options.indentSize);
+                        expectedIndents.push(+baseOffsetInfo.expectedIndent + offsetInfo.offset * options.indentSize);
                         if (baseOffsetInfo.baseline) {
                             break;
                         }
@@ -844,7 +855,7 @@ export const defineVisitor = function create(
 
         return {
             expectedIndent: expectedIndents[0],
-            expectedBaseIndent: expectedIndents.reduce((a, b) => Math.min(a, b))
+            expectedBaseIndent: expectedIndents.reduce((a, b) => Math.min(a, b)),
         };
     }
 
@@ -924,14 +935,14 @@ export const defineVisitor = function create(
                 context.report({
                     loc: {
                         start: {line, column: i},
-                        end: {line, column: i + 1}
+                        end: {line, column: i + 1},
                     },
                     message: 'Expected {{expected}} character, but found {{actual}} character.',
                     data: {
                         expected: JSON.stringify(options.indentChar),
-                        actual: JSON.stringify(indentText[i])
+                        actual: JSON.stringify(indentText[i]),
                     },
-                    fix: defineFix(token, actualIndent, expectedIndent)
+                    fix: defineFix(token, actualIndent, expectedIndent),
                 });
                 return;
             }
@@ -943,7 +954,7 @@ export const defineVisitor = function create(
             context.report({
                 loc: {
                     start: {line, column: 0},
-                    end: {line, column: actualIndent}
+                    end: {line, column: actualIndent},
                 },
                 message: 'Expected indentation of {{expectedIndent}} {{unit}}{{expectedIndentPlural}}'
                     + ' but found {{actualIndent}} {{unit}}{{actualIndentPlural}}.',
@@ -952,9 +963,9 @@ export const defineVisitor = function create(
                     actualIndent: `${actualIndent}`,
                     unit,
                     expectedIndentPlural: expectedIndent === 1 ? '' : 's',
-                    actualIndentPlural: actualIndent === 1 ? '' : 's'
+                    actualIndentPlural: actualIndent === 1 ? '' : 's',
                 },
-                fix: defineFix(token, actualIndent, expectedIndent)
+                fix: defineFix(token, actualIndent, expectedIndent),
             });
         }
     }
@@ -1211,7 +1222,10 @@ export const defineVisitor = function create(
         },
 
         'AssignmentExpression, AssignmentPattern, BinaryExpression, LogicalExpression'(
-            node: estree.AssignmentExpression | estree.AssignmentPattern | estree.BinaryExpression | estree.LogicalExpression
+            node: estree.AssignmentExpression
+                | estree.AssignmentPattern
+                | estree.BinaryExpression
+                | estree.LogicalExpression
         ) {
             const leftToken = getChainHeadToken(node);
             const opToken = (tokenStore.getTokenAfter(
@@ -1226,7 +1240,8 @@ export const defineVisitor = function create(
             setOffset([opToken, rightToken], shouldIndent ? 1 : 0, leftToken);
         },
 
-        'AwaitExpression, RestElement, SpreadElement, UnaryExpression'(node: estree.AwaitExpression | estree.RestElement | estree.SpreadElement | estree.UnaryExpression) {
+        'AwaitExpression, RestElement, SpreadElement, UnaryExpression'(
+            node: estree.AwaitExpression | estree.RestElement | estree.SpreadElement | estree.UnaryExpression) {
             const firstToken = tokenStore.getFirstToken(node);
             const nextToken = tokenStore.getTokenAfter(firstToken);
 
@@ -1242,7 +1257,8 @@ export const defineVisitor = function create(
             );
         },
 
-        'BreakStatement, ContinueStatement, ReturnStatement, ThrowStatement'(node: estree.BreakStatement | estree.ContinueStatement | estree.ReturnStatement | estree.ThrowStatement) {
+        'BreakStatement, ContinueStatement, ReturnStatement, ThrowStatement'(
+            node: estree.BreakStatement | estree.ContinueStatement | estree.ReturnStatement | estree.ThrowStatement) {
             if (
                 ((node.type === 'ReturnStatement' || node.type === 'ThrowStatement') && node.argument != null)
                 || ((node.type === 'BreakStatement' || node.type === 'ContinueStatement')
@@ -1662,7 +1678,7 @@ export const defineVisitor = function create(
         'MemberExpression, MetaProperty'(node: estree.MemberExpression | estree.MetaProperty) {
             const objectToken = tokenStore.getFirstToken(node);
             if (node.type === 'MemberExpression' && node.computed) {
-                const leftBracketToken =(tokenStore.getTokenBefore(
+                const leftBracketToken = (tokenStore.getTokenBefore(
                     node.property,
                     isLeftBracket
                 ));
@@ -1693,7 +1709,7 @@ export const defineVisitor = function create(
                 setOffset(prefixTokens[i], 0, prefixTokens[i - 1]);
             }
 
-            let lastKeyToken: swan.ast.Token;
+            let lastKeyToken: swan.ast.Token = null;
             if (node.computed) {
                 const keyLeftToken = (tokenStore.getFirstToken(
                     node,
@@ -1920,7 +1936,8 @@ export const defineVisitor = function create(
 
         // Process parentheses.
         // `:expression` does not match with MetaProperty and TemplateLiteral as a bug: https://github.com/estools/esquery/pull/59
-        ':expression, MetaProperty, TemplateLiteral'(node: estree.Expression | estree.MetaProperty | estree.TemplateLiteral) {
+        ':expression, MetaProperty, TemplateLiteral'(
+            node: estree.Expression | estree.MetaProperty | estree.TemplateLiteral) {
             let leftToken = tokenStore.getTokenBefore(node);
             let rightToken = tokenStore.getTokenAfter(node);
             let firstToken = tokenStore.getFirstToken(node);
@@ -1962,7 +1979,8 @@ export const defineVisitor = function create(
         },
 
         // Do validation.
-        ':matches(Program, XElement[parent.type!=\'XElement\']):exit'(node: swan.ast.ScriptProgram | swan.ast.XElement) {
+        ':matches(Program, XElement[parent.type!=\'XElement\']):exit'(
+            node: swan.ast.ScriptProgram | swan.ast.XElement) {
             let comments = [];
 
             let tokensOnSameLine: swan.ast.Token[] = [];
@@ -1997,6 +2015,6 @@ export const defineVisitor = function create(
             if (tokensOnSameLine.length >= 1 && tokensOnSameLine.some(isNotComment)) {
                 validate(tokensOnSameLine, comments, lastValidatedToken);
             }
-        }
+        },
     });
 };

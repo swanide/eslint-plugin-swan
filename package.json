@@ -1,6 +1,6 @@
 {
     "name": "@baidu/eslint-plugin-swan",
-    "version": "0.0.1-beta.10",
+    "version": "0.0.1",
     "description": "swan eslint plugin",
     "main": "index.js",
     "bin": {
@@ -37,16 +37,15 @@
         "@types/node": "^14.14.14",
         "@typescript-eslint/eslint-plugin": "^4.11.0",
         "@typescript-eslint/parser": "^4.11.0",
-        "babel-eslint": "^10.1.0",
         "eslint": "^7.32.0",
         "import-fresh": "^3.3.0",
         "jest": "^27.4.5",
-        "ts-jest": "^27.1.2",
-        "typescript": "^4.5.4",
         "rollup": "^2.60.1",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-sourcemaps": "^0.6.3"
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "ts-jest": "^27.1.2",
+        "typescript": "^4.4.4"
     },
     "license": "MIT",
     "engines": {

@@ -17,7 +17,7 @@ export default {
                 '@baidu/swan/xml-indent': [
                     1,
                     4,
-                    {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false}
+                    {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false},
                 ],
                 '@baidu/swan/no-multi-spaces': 1,
                 '@baidu/swan/valid-component-nesting': [1, {allowEmptyBlock: true, ignoreEmptyBlock: ['view']}],

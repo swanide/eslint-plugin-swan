@@ -3,27 +3,27 @@
  * @author mengke(kekee000@gmail.com)
  */
 
-const {RuleTester} = require('eslint');
+import {RuleTester, Rule} from 'eslint';
 import rule from '../../../src/rules/xml-indent';
 
 const ruleTester = new RuleTester({
     parser: require.resolve('@baidu/swan-eslint-parser'),
 });
 
-ruleTester.run('xml-indent', rule, {
+ruleTester.run('xml-indent', rule as Rule.RuleModule, {
 
     valid: [
         {
             filename: 'page.swan',
-            code: '<view s-for="abc in list"></view>'
+            code: '<view s-for="abc in list"></view>',
         },
         {
             filename: 'page.swan',
-            code: '<import-sjs module="abc">var a = 1;</import-sjs>'
+            code: '<import-sjs module="abc">var a = 1;</import-sjs>',
         },
         {
             filename: 'page.swan',
-            code: '<filter module="abc">var a = 1;</filter>'
+            code: '<filter module="abc">var a = 1;</filter>',
         },
         {
             filename: 'page.swan',
@@ -32,14 +32,14 @@ ruleTester.run('xml-indent', rule, {
   aaa
   bbb
   ccc
-</view>`
+</view>`,
         },
         {
             filename: 'page.swan',
             code: `<block>
   <view
     aaa />
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
@@ -47,14 +47,14 @@ ruleTester.run('xml-indent', rule, {
   <view
     s-if="ab"
   />
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
             code: `<block>
   <view>abc
   </view>
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
@@ -64,7 +64,7 @@ ruleTester.run('xml-indent', rule, {
 >
   <view>abc
   </view>
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
@@ -73,8 +73,8 @@ ruleTester.run('xml-indent', rule, {
 >
   <view>abc
   </view>
-</block>`
-        }
+</block>`,
+        },
     ],
 
     invalid: [
@@ -84,10 +84,10 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 0 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
-            output: '<view>\n  <text></text>\n</view>'
+            output: '<view>\n  <text></text>\n</view>',
         },
         {
             filename: 'page.swan',
@@ -95,10 +95,10 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 0 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
-            output: '<view>\n  <text />\n</view>'
+            output: '<view>\n  <text />\n</view>',
         },
         {
             filename: 'page.swan',
@@ -106,10 +106,10 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 4 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
-            output: '<view style="color: #ccc" >\n  <text />\n</view>'
+            output: '<view style="color: #ccc" >\n  <text />\n</view>',
         },
         {
             filename: 'page.swan',
@@ -117,10 +117,10 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 0 spaces but found 2 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
-            output: '<view style="color: #ccc" >\n  <text />\n</view>'
+            output: '<view style="color: #ccc" >\n  <text />\n</view>',
         },
         {
             filename: 'page.swan',
@@ -129,10 +129,10 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 0 spaces but found 1 space.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
-            output: '<import-sjs module="abc">\nvar a = 1;\n</import-sjs>'
+            output: '<import-sjs module="abc">\nvar a = 1;\n</import-sjs>',
         },
         {
             filename: 'page.swan',
@@ -144,14 +144,14 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 0 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
             output: `<!--{}-->
 <block>
   <view>aaa
   </view>
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
@@ -163,14 +163,14 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 0 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
             output: `<!--{}-->
 <block>
   <view>aaa
   </view>
-</block>`
+</block>`,
         },
         {
             filename: 'page.swan',
@@ -180,12 +180,12 @@ ruleTester.run('xml-indent', rule, {
             errors: [
                 {
                     message: 'Expected indentation of 0 spaces but found 2 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
             output: `<!--{}-->
 <block class="a"
-></block>`
+></block>`,
         },
         {
             filename: 'page.swan',
@@ -197,14 +197,14 @@ class="a"
             errors: [
                 {
                     message: 'Expected indentation of 2 spaces but found 0 spaces.',
-                    type: null
-                }
+                    type: null,
+                },
             ],
             output: `<!--{}-->
 <block
   class="a"
 >
-</block>`
-        }
-    ]
+</block>`,
+        },
+    ],
 });
