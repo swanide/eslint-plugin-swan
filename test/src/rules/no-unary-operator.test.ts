@@ -25,6 +25,14 @@ ruleTester.run('no-unary-operator', rule as Rule.RuleModule, {
             filename: 'page.swan',
             code: '<view style="color:{{value}}"></view>',
         },
+        {
+            filename: 'page.swan',
+            code: '<view style="+value"></view>',
+        },
+        {
+            filename: 'page.swan',
+            code: '<view s-if="value"></view>',
+        },
     ],
 
     invalid: [
@@ -51,6 +59,26 @@ ruleTester.run('no-unary-operator', rule as Rule.RuleModule, {
         {
             filename: 'page.swan',
             code: '<view style="color:{{value || + value}}"></view>',
+            errors: [
+                {
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
+                    type: 'UnaryExpression',
+                },
+            ],
+        },
+        {
+            filename: 'page.swan',
+            code: '<view s-if="+value"></view>',
+            errors: [
+                {
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
+                    type: 'UnaryExpression',
+                },
+            ],
+        },
+        {
+            filename: 'page.swan',
+            code: '<view s-elif="value1 || +value"></view>',
             errors: [
                 {
                     message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',

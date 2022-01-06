@@ -20,18 +20,21 @@ export default {
 
     create(context: RuleContext) {
 
+        function verify(node: UnaryExpression) {
+            if (node.operator === '+') {
+                context.report({
+                    node,
+                    message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
+                    loc: node.loc,
+                    fix: null,
+                });
+                return;
+            }
+        }
+
         return defineTemplateBodyVisitor(context, {
-            'XMustache>XExpression UnaryExpression'(node: UnaryExpression) {
-                if (node.operator === '+') {
-                    context.report({
-                        node,
-                        message: '在版本低于 3.230.0 的基础库上不支持一元表达式 \'+\'',
-                        loc: node.loc,
-                        fix: null,
-                    });
-                    return;
-                }
-            },
+            'XMustache>XExpression UnaryExpression': verify,
+            'XDirective>XExpression UnaryExpression': verify,
         });
     },
 };
