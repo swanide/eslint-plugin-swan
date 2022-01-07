@@ -26,29 +26,34 @@ export default {
 
     create(context: RuleContext) {
 
+        function verify(node: swan.ast.XDirective) {
+            const element = node.parent.parent;
+            const {prefix, name} = node.key;
+            const prevElement = getPrevNode(element);
+
+            if (!prevElement || prevElement.type !== 'XElement'
+                || (!hasDirective(prevElement, 'if')
+                    && !hasDirective(prevElement, 'elif')
+                    && !hasDirective(prevElement, 'else-if'))) {
+                context.report({
+                    node,
+                    loc: node.loc,
+                    message: `'${prefix}${name}' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'`,
+                });
+            }
+
+            if (!isValidSingleMustacheOrExpression(node.value)) {
+                context.report({
+                    node,
+                    loc: node.loc,
+                    message: `'${prefix}${name}' 值不正确`,
+                });
+            }
+        }
+
         return defineTemplateBodyVisitor(context, {
-            'XDirective[key.name="elif"]'(node: swan.ast.XDirective) {
-                const element = node.parent.parent;
-                const {prefix} = node.key;
-                const prevElement = getPrevNode(element);
-
-                if (!prevElement || prevElement.type !== 'XElement'
-                    || (!hasDirective(element, 'if') && !hasDirective(element, 'elif'))) {
-                    context.report({
-                        node,
-                        loc: node.loc,
-                        message: `'${prefix}elif' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
-                    });
-                }
-
-                if (!isValidSingleMustacheOrExpression(node.value)) {
-                    context.report({
-                        node,
-                        loc: node.loc,
-                        message: `'${prefix}elif' 值不正确`,
-                    });
-                }
-            },
+            'XDirective[key.name="elif"]': verify,
+            'XDirective[key.name="else-if"]': verify,
         });
     },
 };

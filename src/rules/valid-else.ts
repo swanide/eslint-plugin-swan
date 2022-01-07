@@ -29,11 +29,13 @@ export default {
                 const prevElement = getPrevNode(element);
 
                 if (!prevElement || prevElement.type !== 'XElement'
-                    || (!hasDirective(element, 'if') && hasDirective(element, 'elif'))) {
+                    || (!hasDirective(prevElement, 'if')
+                        && !hasDirective(prevElement, 'elif')
+                        && !hasDirective(prevElement, 'else-if'))) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
+                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'`,
                     });
                 }
 
@@ -45,12 +47,19 @@ export default {
                     });
                 }
 
-
                 if (hasDirective(element, 'elif')) {
                     context.report({
                         node,
                         loc: node.loc,
                         message: `'${prefix}else' 和 '${prefix}elif' 不可以同时设置在标签上`,
+                    });
+                }
+
+                if (hasDirective(element, 'else-if')) {
+                    context.report({
+                        node,
+                        loc: node.loc,
+                        message: `'${prefix}else' 和 '${prefix}else-if' 不可以同时设置在标签上`,
                     });
                 }
             },

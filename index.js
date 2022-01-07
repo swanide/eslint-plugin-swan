@@ -1253,27 +1253,31 @@ var validElif = {
         schema: [],
     },
     create(context) {
+        function verify(node) {
+            const element = node.parent.parent;
+            const { prefix, name } = node.key;
+            const prevElement = getPrevNode(element);
+            if (!prevElement || prevElement.type !== 'XElement'
+                || (!hasDirective(prevElement, 'if')
+                    && !hasDirective(prevElement, 'elif')
+                    && !hasDirective(prevElement, 'else-if'))) {
+                context.report({
+                    node,
+                    loc: node.loc,
+                    message: `'${prefix}${name}' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'`,
+                });
+            }
+            if (!isValidSingleMustacheOrExpression(node.value)) {
+                context.report({
+                    node,
+                    loc: node.loc,
+                    message: `'${prefix}${name}' 值不正确`,
+                });
+            }
+        }
         return defineTemplateBodyVisitor(context, {
-            'XDirective[key.name="elif"]'(node) {
-                const element = node.parent.parent;
-                const { prefix } = node.key;
-                const prevElement = getPrevNode(element);
-                if (!prevElement || prevElement.type !== 'XElement'
-                    || (!hasDirective(element, 'if') && !hasDirective(element, 'elif'))) {
-                    context.report({
-                        node,
-                        loc: node.loc,
-                        message: `'${prefix}elif' 找不到匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
-                    });
-                }
-                if (!isValidSingleMustacheOrExpression(node.value)) {
-                    context.report({
-                        node,
-                        loc: node.loc,
-                        message: `'${prefix}elif' 值不正确`,
-                    });
-                }
-            },
+            'XDirective[key.name="elif"]': verify,
+            'XDirective[key.name="else-if"]': verify,
         });
     },
 };
@@ -1297,11 +1301,13 @@ var validElse = {
                 const { prefix } = node.key;
                 const prevElement = getPrevNode(element);
                 if (!prevElement || prevElement.type !== 'XElement'
-                    || (!hasDirective(element, 'if') && hasDirective(element, 'elif'))) {
+                    || (!hasDirective(prevElement, 'if')
+                        && !hasDirective(prevElement, 'elif')
+                        && !hasDirective(prevElement, 'else-if'))) {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'.`,
+                        message: `'${prefix}else' 需要有匹配的 '${prefix}if' 或者 '${prefix}elif'`,
                     });
                 }
                 if ((_a = node.value) === null || _a === void 0 ? void 0 : _a.length) {
@@ -1316,6 +1322,13 @@ var validElse = {
                         node,
                         loc: node.loc,
                         message: `'${prefix}else' 和 '${prefix}elif' 不可以同时设置在标签上`,
+                    });
+                }
+                if (hasDirective(element, 'else-if')) {
+                    context.report({
+                        node,
+                        loc: node.loc,
+                        message: `'${prefix}else' 和 '${prefix}else-if' 不可以同时设置在标签上`,
                     });
                 }
             },
@@ -1426,7 +1439,7 @@ var validIf = {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}' 和 '${prefix}else' 不可以设置在同一个标签上`,
+                        message: `'${prefix}if' 和 '${prefix}else' 不可以设置在同一个标签上`,
                     });
                 }
                 if (hasDirective(element, 'elif')) {
@@ -1434,6 +1447,13 @@ var validIf = {
                         node,
                         loc: node.loc,
                         message: `'${prefix}if' 和 '${prefix}elif' 不可以设置在同一个标签上`,
+                    });
+                }
+                if (hasDirective(element, 'else-if')) {
+                    context.report({
+                        node,
+                        loc: node.loc,
+                        message: `'${prefix}if' 和 '${prefix}else-if' 不可以设置在同一个标签上`,
                     });
                 }
                 if (!isValidSingleMustacheOrExpression(node.value)) {

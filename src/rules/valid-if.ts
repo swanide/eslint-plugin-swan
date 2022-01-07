@@ -28,14 +28,23 @@ export default {
                     context.report({
                         node,
                         loc: node.loc,
-                        message: `'${prefix}' 和 '${prefix}else' 不可以设置在同一个标签上`,
+                        message: `'${prefix}if' 和 '${prefix}else' 不可以设置在同一个标签上`,
                     });
                 }
+
                 if (hasDirective(element, 'elif')) {
                     context.report({
                         node,
                         loc: node.loc,
                         message: `'${prefix}if' 和 '${prefix}elif' 不可以设置在同一个标签上`,
+                    });
+                }
+
+                if (hasDirective(element, 'else-if')) {
+                    context.report({
+                        node,
+                        loc: node.loc,
+                        message: `'${prefix}if' 和 '${prefix}else-if' 不可以设置在同一个标签上`,
                     });
                 }
 
