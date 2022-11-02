@@ -1119,12 +1119,11 @@ const selfCloseComponents = [
     'textarea',
     'switch',
 ];
-const topLevelCompoents = [
+const topLevelComponents = [
     'import-sjs',
     'import',
-    'filter',
 ];
-const withSrcCompoents = [
+const withSrcComponents = [
     'import',
     'include',
     'import-sjs',
@@ -1190,7 +1189,7 @@ var validComponentNesting = {
                         message: '自闭合的组件不能嵌套子组件',
                     });
                 }
-                if (withSrcCompoents.includes(node.name)
+                if (withSrcComponents.includes(node.name)
                     && hasAttribute(node, 'src')
                     && !isSelfClose(node)) {
                     context.report({
@@ -1199,7 +1198,7 @@ var validComponentNesting = {
                         message: `'${node.name}' 带有 'src' 属性，不能嵌套子组件`,
                     });
                 }
-                if (topLevelCompoents.includes(node.name) && !isAtTopLevel(node)) {
+                if (topLevelComponents.includes(node.name) && !isAtTopLevel(node)) {
                     if (node.name === 'template' && hasAttribute(node, 'is')) ;
                     else {
                         context.report({

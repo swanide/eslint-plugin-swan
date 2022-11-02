@@ -11,8 +11,8 @@ import {
     blockComponents,
     inlineBlockComponents,
     inlineComponents,
-    topLevelCompoents,
-    withSrcCompoents,
+    topLevelComponents,
+    withSrcComponents,
 } from '../utils/component';
 
 function isSelfClose(node: swan.ast.XElement) {
@@ -82,7 +82,7 @@ export default {
                 }
 
                 // import-sjs has src attribute is self close
-                if (withSrcCompoents.includes(node.name)
+                if (withSrcComponents.includes(node.name)
                     && hasAttribute(node, 'src')
                     && !isSelfClose(node)
                 ) {
@@ -93,7 +93,7 @@ export default {
                     });
                 }
 
-                if (topLevelCompoents.includes(node.name) && !isAtTopLevel(node)) {
+                if (topLevelComponents.includes(node.name) && !isAtTopLevel(node)) {
                     if (node.name === 'template' && hasAttribute(node, 'is')) {
                         // do nothing
                     }

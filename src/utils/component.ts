@@ -73,16 +73,15 @@ export const selfCloseComponents = [
 /**
  * top level components
  */
-export const topLevelCompoents = [
+export const topLevelComponents = [
     'import-sjs',
     'import',
-    'filter',
 ];
 
 /**
  * components with src
  */
-export const withSrcCompoents = [
+export const withSrcComponents = [
     'import',
     'include',
     'import-sjs',
