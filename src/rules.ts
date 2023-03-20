@@ -7,6 +7,7 @@ import commentDirective from './rules/comment-directive';
 import dotLocation from './rules/dot-location';
 import dotNotation from './rules/dot-notation';
 import eqeqeq from './rules/eqeqeq';
+import filterName from './rules/filter-name';
 import funcCallSpacing from './rules/func-call-spacing';
 import htmlEndTag from './rules/html-end-tag';
 import keySpacing from './rules/key-spacing';
@@ -19,6 +20,7 @@ import noParsingError from './rules/no-parsing-error';
 import noUnaryOperator from './rules/no-unary-operator';
 import noUselessConcat from './rules/no-useless-concat';
 import noUselessMustache from './rules/no-useless-mustache';
+import templateName from './rules/template-name';
 import validBind from './rules/valid-bind';
 import validComponentNesting from './rules/valid-component-nesting';
 import validElif from './rules/valid-elif';
@@ -33,6 +35,7 @@ export default {
     'dot-location': dotLocation,
     'dot-notation': dotNotation,
     'eqeqeq': eqeqeq,
+    'filter-name': filterName,
     'func-call-spacing': funcCallSpacing,
     'html-end-tag': htmlEndTag,
     'key-spacing': keySpacing,
@@ -45,6 +48,7 @@ export default {
     'no-unary-operator': noUnaryOperator,
     'no-useless-concat': noUselessConcat,
     'no-useless-mustache': noUselessMustache,
+    'template-name': templateName,
     'valid-bind': validBind,
     'valid-component-nesting': validComponentNesting,
     'valid-elif': validElif,

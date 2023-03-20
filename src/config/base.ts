@@ -57,6 +57,8 @@ export default {
                 '@baidu/swan/no-confusing-for-if': 2,
                 '@baidu/swan/html-end-tag': 2,
                 '@baidu/swan/valid-bind': 2,
+                '@baidu/swan/template-name': 2,
+                '@baidu/swan/filter-name': 2,
             },
         },
     ],

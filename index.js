@@ -168,6 +168,8 @@ var base = {
                 '@baidu/swan/no-confusing-for-if': 2,
                 '@baidu/swan/html-end-tag': 2,
                 '@baidu/swan/valid-bind': 2,
+                '@baidu/swan/template-name': 2,
+                '@baidu/swan/filter-name': 2,
             },
         },
     ],
@@ -333,6 +335,21 @@ function isIdentifierExpression(values) {
     }
     const [value] = values;
     return value.type === 'XExpression' && ((_a = value.expression) === null || _a === void 0 ? void 0 : _a.type) === 'Identifier';
+}
+function getValueType(node) {
+    if (node.value == null || !node.value.length) {
+        return 'none';
+    }
+    if (node.value.every(v => v.type === 'XLiteral')) {
+        return 'literal';
+    }
+    if (node.value.every(v => v.type === 'XMustache')) {
+        return 'mustache';
+    }
+    if (node.value.every(v => v.type === 'XExpression')) {
+        return 'expression';
+    }
+    return 'mixed';
 }
 function wrapCoreRule(coreRuleName) {
     const coreRule = getCoreRule(coreRuleName);
@@ -585,6 +602,47 @@ var dotLocation = wrapCoreRule('dot-location');
 var dotNotation = wrapCoreRule('dot-notation');
 
 var eqeqeq = wrapCoreRule('eqeqeq');
+
+const filterNameReg = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+var filterName = {
+    meta: {
+        type: 'problem',
+        docs: {
+            description: 'validate filter/sjs name',
+            categories: ['essential'],
+            url: getRuleUrl('sjs-name'),
+        },
+        fixable: null,
+        schema: [],
+    },
+    create(context) {
+        return defineTemplateBodyVisitor(context, {
+            'XElement'(node) {
+                if (node.name !== 'filter' && node.name !== 'import-sjs') {
+                    return;
+                }
+                const attr = node.startTag.attributes.find(a => a.key.name === 'module');
+                if (!attr) {
+                    context.report({
+                        node: node,
+                        loc: node.loc,
+                        message: `${node.name} 需要设置 module 模块名，并且符合 \'a-zA-Z0-9_\'`,
+                    });
+                    return;
+                }
+                if (attr.key.name === 'module'
+                    && (getValueType(attr) !== 'literal'
+                        || !filterNameReg.test(attr.value[0].value))) {
+                    context.report({
+                        node: attr,
+                        loc: attr.loc,
+                        message: `${node.name} module 模块名必须为字符串，并且符合 \'a-zA-Z0-9_\'`,
+                    });
+                }
+            },
+        });
+    },
+};
 
 var funcCallSpacing = wrapCoreRule('func-call-spacing');
 
@@ -1024,6 +1082,51 @@ var noUselessMustache = {
         }
         return defineTemplateBodyVisitor(context, {
             'XMustache': verify,
+        });
+    },
+};
+
+const templateNameReg = /^[a-zA-Z0-9_-]+$/;
+var templateName = {
+    meta: {
+        type: 'problem',
+        docs: {
+            description: 'validate template name',
+            categories: ['essential'],
+            url: getRuleUrl('template-name'),
+        },
+        fixable: null,
+        schema: [],
+    },
+    create(context) {
+        return defineTemplateBodyVisitor(context, {
+            'XElement'(node) {
+                if (node.name !== 'template') {
+                    return;
+                }
+                const attr = node.startTag.attributes.find(a => a.key.name === 'name' || a.key.name === 'is');
+                if (!attr) {
+                    return;
+                }
+                if (attr.key.name === 'name'
+                    && (getValueType(attr) !== 'literal'
+                        || !templateNameReg.test(attr.value[0].value))) {
+                    context.report({
+                        node: attr,
+                        loc: attr.loc,
+                        message: 'template name 名称必须为字符串，并且符合 \'a-zA-Z0-9_-\'',
+                    });
+                }
+                else if (attr.key.name === 'is'
+                    && getValueType(attr) === 'literal'
+                    && !templateNameReg.test(attr.value[0].value)) {
+                    context.report({
+                        node: attr,
+                        loc: attr.loc,
+                        message: 'template is 需要符合 \'a-zA-Z0-9_-\'',
+                    });
+                }
+            },
         });
     },
 };
@@ -2755,6 +2858,7 @@ var rules = {
     'dot-location': dotLocation,
     'dot-notation': dotNotation,
     'eqeqeq': eqeqeq,
+    'filter-name': filterName,
     'func-call-spacing': funcCallSpacing,
     'html-end-tag': htmlEndTag,
     'key-spacing': keySpacing,
@@ -2767,6 +2871,7 @@ var rules = {
     'no-unary-operator': noUnaryOperator,
     'no-useless-concat': noUselessConcat,
     'no-useless-mustache': noUselessMustache,
+    'template-name': templateName,
     'valid-bind': validBind,
     'valid-component-nesting': validComponentNesting,
     'valid-elif': validElif,
