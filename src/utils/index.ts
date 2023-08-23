@@ -3,7 +3,7 @@
  * @author mengke(kekee000@gmail.com)
  */
 import type eslint from 'eslint';
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 import {RuleContext} from '../types/eslint';
 
 /* eslint-disable @typescript-eslint/no-var-requires,  @typescript-eslint/no-require-imports */
@@ -103,7 +103,7 @@ export function defineTemplateBodyVisitor(
         if (isSwanFile(context.getFilename())) {
             context.report({
                 loc: {line: 1, column: 0},
-                message: 'Use the latest @baidu/swan-eslint-parser.',
+                message: 'Use the latest @swanide/swan-eslint-parser.',
             });
         }
         return {};

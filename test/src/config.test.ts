@@ -34,7 +34,7 @@ describe('lint', () => {
             baseConfig: baseConfig as any,
             resolvePluginsRelativeTo: __dirname,
             plugins: {
-                '@baidu/eslint-plugin-swan': eslintPluginsSwan,
+                '@swanide/eslint-plugin-swan': eslintPluginsSwan,
             },
             fix: false,
         });
@@ -53,7 +53,7 @@ describe('lint', () => {
             baseConfig: recommendedConfig as any,
             resolvePluginsRelativeTo: __dirname,
             plugins: {
-                '@baidu/eslint-plugin-swan': eslintPluginsSwan,
+                '@swanide/eslint-plugin-swan': eslintPluginsSwan,
             },
             fix: false,
         });
@@ -73,7 +73,7 @@ describe('lint', () => {
             baseConfig: baseConfig as any,
             resolvePluginsRelativeTo: __dirname,
             plugins: {
-                '@baidu/eslint-plugin-swan': eslintPluginsSwan,
+                '@swanide/eslint-plugin-swan': eslintPluginsSwan,
             },
             fix: false,
         });

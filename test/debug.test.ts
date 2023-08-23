@@ -18,13 +18,13 @@ function lint() {
 </view>
 `;
     const config = {
-        parser: '@baidu/swan-eslint-parser',
+        parser: '@swanide/swan-eslint-parser',
         rules: {
             [ruleName]: 'error',
         },
     };
     const linter = new Linter();
-    linter.defineParser('@baidu/swan-eslint-parser', require('@baidu/swan-eslint-parser'));
+    linter.defineParser('@swanide/swan-eslint-parser', require('@swanide/swan-eslint-parser'));
     linter.defineRule(ruleName, require(`../src/rules/${ruleName}`).default);
     const messages = linter.verify(code, config as any, `${__dirname}/index.swan`);
     console.log(messages);

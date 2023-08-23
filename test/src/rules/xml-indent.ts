@@ -7,7 +7,7 @@ import {RuleTester, Rule} from 'eslint';
 import rule from '../../../src/rules/xml-indent';
 
 const ruleTester = new RuleTester({
-    parser: require.resolve('@baidu/swan-eslint-parser'),
+    parser: require.resolve('@swanide/swan-eslint-parser'),
 });
 
 ruleTester.run('xml-indent', rule as Rule.RuleModule, {

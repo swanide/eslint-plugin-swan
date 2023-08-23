@@ -5,8 +5,8 @@
  */
 
 import type estree from 'estree';
-import type swan from '@baidu/swan-eslint-parser';
-import {ParserServices} from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
+import {ParserServices} from '@swanide/swan-eslint-parser';
 import type {RuleContext, RuleFixer} from '../types/eslint';
 
 const KNOWN_NODES = new Set([

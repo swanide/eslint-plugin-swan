@@ -3,7 +3,7 @@
  * @author Armano
  */
 import type estree from 'estree';
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 import type {RuleContext} from '../types/eslint';
 import {getRuleUrl, defineTemplateBodyVisitor} from '../utils';
 

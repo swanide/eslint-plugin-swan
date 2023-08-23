@@ -5,7 +5,7 @@
 
 /* eslint-disable no-negated-condition */
 
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 import type {RuleContext} from '../types/eslint';
 import {getRuleUrl} from '../utils';
 

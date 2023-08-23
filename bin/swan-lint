@@ -73,7 +73,7 @@ async function main(pattern) {
         baseConfig: swanPlugin.configs[process.env.SWAN_LINT_CONFIG || 'recommended'],
         extensions: ['.swan'],
         plugins: {
-            '@baidu/eslint-plugin-swan': swanPlugin,
+            '@swanide/eslint-plugin-swan': swanPlugin,
         },
     });
     const results = await eslint.lintFiles(pattern);

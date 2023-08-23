@@ -2,7 +2,7 @@
  * @file valid-if
  * @author mengke(kekee000@gmail.com)
  */
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 import type {RuleContext} from '../types/eslint';
 import {getRuleUrl, defineTemplateBodyVisitor, hasDirective, isValidSingleMustacheOrExpression} from '../utils';
 

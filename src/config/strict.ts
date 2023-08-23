@@ -14,19 +14,19 @@ export default {
             rules: {
                 ...recommendedRules,
                 'max-len': [2, 200],
-                '@baidu/swan/xml-indent': [
+                '@swanide/swan/xml-indent': [
                     2,
                     4,
                     {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false},
                 ],
-                '@baidu/swan/valid-for': [2, {ignoreDuplicateForItem: false}],
-                '@baidu/swan/valid-component-nesting': [1, {allowEmptyBlock: false, ignoreEmptyBlock: ['view']}],
-                '@baidu/swan/no-multi-spaces': 1,
-                '@baidu/swan/mustache-interpolation-spacing': [1, 'never'],
+                '@swanide/swan/valid-for': [2, {ignoreDuplicateForItem: false}],
+                '@swanide/swan/valid-component-nesting': [1, {allowEmptyBlock: false, ignoreEmptyBlock: ['view']}],
+                '@swanide/swan/no-multi-spaces': 1,
+                '@swanide/swan/mustache-interpolation-spacing': [1, 'never'],
 
                 // eslint-core
-                '@baidu/swan/eqeqeq': 2,
-                '@baidu/swan/func-call-spacing': 1,
+                '@swanide/swan/eqeqeq': 2,
+                '@swanide/swan/func-call-spacing': 1,
             },
         },
     ],

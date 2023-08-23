@@ -7,7 +7,7 @@ import {RuleTester, Rule} from 'eslint';
 import rule from '../../../src/rules/valid-elif';
 
 const ruleTester = new RuleTester({
-    parser: require.resolve('@baidu/swan-eslint-parser'),
+    parser: require.resolve('@swanide/swan-eslint-parser'),
 });
 
 ruleTester.run('valid-elif', rule as Rule.RuleModule, {

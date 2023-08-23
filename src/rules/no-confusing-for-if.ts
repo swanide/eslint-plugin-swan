@@ -3,7 +3,7 @@
  * @author mengke01(kekee000@gmail.com)
  */
 
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 import type {RuleContext} from '../types/eslint';
 import {getRuleUrl, defineTemplateBodyVisitor, hasDirective, getDirective} from '../utils';
 

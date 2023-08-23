@@ -14,22 +14,22 @@ export default {
             rules: {
                 ...baseRules,
                 'max-len': [1, 200],
-                '@baidu/swan/xml-indent': [
+                '@swanide/swan/xml-indent': [
                     1,
                     4,
                     {baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false},
                 ],
-                '@baidu/swan/no-multi-spaces': 1,
-                '@baidu/swan/valid-component-nesting': [1, {allowEmptyBlock: true, ignoreEmptyBlock: ['view']}],
+                '@swanide/swan/no-multi-spaces': 1,
+                '@swanide/swan/valid-component-nesting': [1, {allowEmptyBlock: true, ignoreEmptyBlock: ['view']}],
                 // eslint-core
-                '@baidu/swan/arrow-spacing': 2,
+                '@swanide/swan/arrow-spacing': 2,
 
-                '@baidu/swan/dot-location': [2, 'property'],
-                '@baidu/swan/array-bracket-spacing': 1,
-                '@baidu/swan/dot-notation': 1,
-                '@baidu/swan/key-spacing': 1,
-                '@baidu/swan/keyword-spacing': 1,
-                '@baidu/swan/no-useless-concat': 2,
+                '@swanide/swan/dot-location': [2, 'property'],
+                '@swanide/swan/array-bracket-spacing': 1,
+                '@swanide/swan/dot-notation': 1,
+                '@swanide/swan/key-spacing': 1,
+                '@swanide/swan/keyword-spacing': 1,
+                '@swanide/swan/no-useless-concat': 2,
             },
         },
     ],

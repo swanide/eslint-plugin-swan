@@ -128,12 +128,12 @@ var base = {
     overrides: [
         {
             files: ['*.swan'],
-            plugins: ['@baidu/eslint-plugin-swan'],
-            parser: require.resolve('@baidu/swan-eslint-parser'),
+            plugins: ['@swanide/eslint-plugin-swan'],
+            parser: require.resolve('@swanide/swan-eslint-parser'),
             env: {
                 'browser': true,
                 'es6': true,
-                '@baidu/swan/globals': true,
+                '@swanide/swan/globals': true,
             },
             rules: {
                 'indent': 0,
@@ -156,20 +156,20 @@ var base = {
                 'prefer-const': 0,
                 'no-magic-numbers': 0,
                 'eol-last': 0,
-                '@baidu/swan/comment-directive': 2,
-                '@baidu/swan/no-parsing-error': 2,
-                '@baidu/swan/no-duplicate-attributes': 2,
-                '@baidu/swan/no-useless-mustache': 2,
-                '@baidu/swan/no-unary-operator': 2,
-                '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: true }],
-                '@baidu/swan/valid-if': 2,
-                '@baidu/swan/valid-elif': 2,
-                '@baidu/swan/valid-else': 2,
-                '@baidu/swan/no-confusing-for-if': 2,
-                '@baidu/swan/html-end-tag': 2,
-                '@baidu/swan/valid-bind': 2,
-                '@baidu/swan/template-name': 2,
-                '@baidu/swan/filter-name': 2,
+                '@swanide/swan/comment-directive': 2,
+                '@swanide/swan/no-parsing-error': 2,
+                '@swanide/swan/no-duplicate-attributes': 2,
+                '@swanide/swan/no-useless-mustache': 2,
+                '@swanide/swan/no-unary-operator': 2,
+                '@swanide/swan/valid-for': [2, { ignoreDuplicateForItem: true }],
+                '@swanide/swan/valid-if': 2,
+                '@swanide/swan/valid-elif': 2,
+                '@swanide/swan/valid-else': 2,
+                '@swanide/swan/no-confusing-for-if': 2,
+                '@swanide/swan/html-end-tag': 2,
+                '@swanide/swan/valid-bind': 2,
+                '@swanide/swan/template-name': 2,
+                '@swanide/swan/filter-name': 2,
             },
         },
     ],
@@ -189,11 +189,11 @@ var __rest$1 = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a$1 = base.overrides[0], { rules: baseRules } = _a$1, baseOverwritesSwan = __rest$1(_a$1, ["rules"]);
 var recommended = Object.assign(Object.assign({}, base), { overrides: [
-        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@baidu/swan/xml-indent': [
+        Object.assign(Object.assign({}, baseOverwritesSwan), { rules: Object.assign(Object.assign({}, baseRules), { 'max-len': [1, 200], '@swanide/swan/xml-indent': [
                     1,
                     4,
                     { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false },
-                ], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@baidu/swan/arrow-spacing': 2, '@baidu/swan/dot-location': [2, 'property'], '@baidu/swan/array-bracket-spacing': 1, '@baidu/swan/dot-notation': 1, '@baidu/swan/key-spacing': 1, '@baidu/swan/keyword-spacing': 1, '@baidu/swan/no-useless-concat': 2 }) }),
+                ], '@swanide/swan/no-multi-spaces': 1, '@swanide/swan/valid-component-nesting': [1, { allowEmptyBlock: true, ignoreEmptyBlock: ['view'] }], '@swanide/swan/arrow-spacing': 2, '@swanide/swan/dot-location': [2, 'property'], '@swanide/swan/array-bracket-spacing': 1, '@swanide/swan/dot-notation': 1, '@swanide/swan/key-spacing': 1, '@swanide/swan/keyword-spacing': 1, '@swanide/swan/no-useless-concat': 2 }) }),
     ] });
 
 var __rest = (undefined && undefined.__rest) || function (s, e) {
@@ -209,11 +209,11 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 };
 const _a = recommended.overrides[0], { rules: recommendedRules } = _a, recommendedOverwritesSwan = __rest(_a, ["rules"]);
 var strict = Object.assign(Object.assign({}, recommended), { overrides: [
-        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 200], '@baidu/swan/xml-indent': [
+        Object.assign(Object.assign({}, recommendedOverwritesSwan), { rules: Object.assign(Object.assign({}, recommendedRules), { 'max-len': [2, 200], '@swanide/swan/xml-indent': [
                     2,
                     4,
                     { baseIndent: 1, scriptBaseIndent: 0, alignAttributesVertically: false },
-                ], '@baidu/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@baidu/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@baidu/swan/no-multi-spaces': 1, '@baidu/swan/mustache-interpolation-spacing': [1, 'never'], '@baidu/swan/eqeqeq': 2, '@baidu/swan/func-call-spacing': 1 }) }),
+                ], '@swanide/swan/valid-for': [2, { ignoreDuplicateForItem: false }], '@swanide/swan/valid-component-nesting': [1, { allowEmptyBlock: false, ignoreEmptyBlock: ['view'] }], '@swanide/swan/no-multi-spaces': 1, '@swanide/swan/mustache-interpolation-spacing': [1, 'never'], '@swanide/swan/eqeqeq': 2, '@swanide/swan/func-call-spacing': 1 }) }),
     ] });
 
 const emptyTextReg = /^\s*$/;
@@ -266,7 +266,7 @@ function defineTemplateBodyVisitor(context, templateBodyVisitor, scriptVisitor) 
         if (isSwanFile(context.getFilename())) {
             context.report({
                 loc: { line: 1, column: 0 },
-                message: 'Use the latest @baidu/swan-eslint-parser.',
+                message: 'Use the latest @swanide/swan-eslint-parser.',
             });
         }
         return {};

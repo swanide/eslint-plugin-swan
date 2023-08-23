@@ -3,7 +3,7 @@
  * @author mengke01(kekee000@gmail.com)
  */
 import * as eslint from 'eslint';
-import type swan from '@baidu/swan-eslint-parser';
+import type swan from '@swanide/swan-eslint-parser';
 
 
 type ReportDescriptor = eslint.Rule.ReportDescriptor | {
